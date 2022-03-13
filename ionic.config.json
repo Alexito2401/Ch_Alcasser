@@ -1,0 +1,7 @@
+{
+  "name": "CH_Alcasser",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
