@@ -1,62 +1,82 @@
 <ion-header>
   <ion-toolbar mode="ios" class="c-backgorund">
-    <ion-title class="ion-text-center">CH Alcasser</ion-title>
+    <ion-title class="ion-text-center" style="--color: white"
+      >CH Alcasser</ion-title
+    >
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="backgorund ion-padding">
-  <ion-img
-    style="width: 150px; margin: auto"
-    src="../../../assets/img/escut.png"
-  ></ion-img>
+  <ion-img class="c-image" src="../../../assets/img/escut.png"></ion-img>
+  <picture>
+    <source
+      media="(min-height: 900px)"
+      srcset="../../../assets/img/escut.png"
+    />
+  </picture>
   <div class="c-formulario">
     <form [formGroup]="credentialForm">
       <ion-item class="c-input">
         <ion-input
+          style="--placeholder-color: white"
           placeholder="Email Address"
           formControlName="email"
-          autofocus="true"
           clearInput="true"
+          mode="ios"
         >
         </ion-input>
+        <ion-icon name="mail"></ion-icon>
       </ion-item>
       <div
         *ngIf="(email.dirty || email.touched) && email.errors"
         class="errors"
       >
-        <span *ngIf="email.errors?.required">Email is required</span>
-        <span *ngIf="email.errors?.email">Email is invalid</span>
+        <span *ngIf="email.errors?.required">Email es obligatorio</span>
+        <span *ngIf="email.errors?.email">Email es invalido</span>
       </div>
 
       <ion-item class="c-input">
         <ion-input
+          style="--placeholder-color: white"
           placeholder="Password"
           formControlName="password"
           type="password"
           clearInput="true"
+          mode="ios"
         >
         </ion-input>
+        <ion-icon name="id-card"></ion-icon>
       </ion-item>
       <div
         *ngIf="(password.dirty || password.touched) && password.errors"
         class="errors"
       >
-        <span *ngIf="password.errors?.required">Password is required</span>
+        <span *ngIf="password.errors?.required">Contraseña es obligatoria</span>
         <span *ngIf="password.errors?.password"
-          >Password needs to be 6 characters</span
+          >Longuitud minima de 6 caracteres</span
         >
       </div>
     </form>
 
-    <ion-button size="large" mode="md" class="c-backgorund c-button">Iniciar sesion</ion-button>
+    <ion-button mode="md" style="--color: white;" class="c-backgorund c-button"
+      >Iniciar sesion</ion-button
+    >
     <br />
-    <ion-button mode="md" class="c-backgorund c-button">Registrarse</ion-button>
-    <br>
-    <span>or</span>
-    <br />
-    <ion-button  mode="md" style="--background: #fff; color: #010101; font-weight: bold">
-      <img src="https://img.icons8.com/color/16/000000/google-logo.png" />
+    <ion-button
+      mode="md"
+      style="--background: #fff; color: #010101; font-weight: bold"
+    >
+      <img
+        style="padding-right: 5px"
+        src="https://img.icons8.com/color/16/000000/google-logo.png"
+      />
       Iniciar sesion con Google
     </ion-button>
+    <br />
+    <span>o</span>
+    <br />
+    <ion-button mode="md" class="c-button" fill="clear" routerLink="registrarse"
+      >Registrarse</ion-button
+    >
   </div>
 </ion-content>

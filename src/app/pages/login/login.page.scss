@@ -47,26 +47,40 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0102', endColorstr='#010101', GradientType=0 );
 }
 
-
-
 ion-content {
   --background: #fff url("../../../assets/img/background/fondo.jpg") no-repeat
     center center / cover;
 }
 
-span{
-    color: black;
-    font-weight: bold;
+.c-image {
+  width: 150px;
+  margin: auto;
+  
+}
+
+@media (max-height: 550px) {
+  .c-image {
+    display: none;
+    margin: auto;
+  }
+}
+
+span {
+  color: black;
+  font-weight: bold;
 }
 
 .c-text--error {
   color: black;
+  padding: 0;
 }
 
 @media (min-width: 769px) {
-    .c-button{
-        width: 50%;
-    }
+  .c-button {
+    width: 50%;
+    --color: black;
+    font-weight: bold;
+  }
 
   .c-formulario {
     text-align: center;
@@ -83,9 +97,11 @@ span{
 }
 
 @media (min-width: 768px) {
-    .c-button{
-        width: 50%;
-    }
+  .c-button {
+    width: 50%;
+    --color: black;
+    font-weight: bold;
+  }
   .c-formulario {
     text-align: center;
     position: absolute;
@@ -100,9 +116,11 @@ span{
 }
 
 @media (min-width: 576px) {
-    .c-button{
-        width: 70%;
-    }
+  .c-button {
+    width: 70%;
+    --color: black;
+    font-weight: bold;
+  }
   .c-formulario {
     text-align: center;
     position: absolute;
@@ -116,25 +134,39 @@ span{
 }
 
 @media (min-width: 0px) {
-    .c-button{
-        width: 70%;
-    }
-    .c-formulario {
-      text-align: center;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: calc(50% - 100px);
-      background-color: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(5px);
-      padding: 10px;
-    }
+  .c-button {
+    width: 70%;
+    --color: black;
+    font-weight: bold;
   }
+  .c-formulario {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% - 100px);
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+  }
+}
 
 ion-item {
   margin: 20px 0 20px;
 }
 
-.c-input{
-    --border-radius: 10px;
+ion-input{
+  color: #FFF;
+  --placeholder-color: rgb(255, 255, 255) !important;
+}
+
+ion-icon{
+  color: #FFF;
+}
+
+.c-input {
+  --border-radius: 10px;
+  --background: rgb(28, 27, 27);
+  padding: 0;
+  margin: 10px;
 }
