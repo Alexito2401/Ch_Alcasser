@@ -20,6 +20,7 @@ log.txt
 npm-debug.log*
 
 /.angular
+/.firebase
 /.idea
 /.ionic
 /.sass-cache

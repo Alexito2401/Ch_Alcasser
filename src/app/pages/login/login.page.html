@@ -62,11 +62,12 @@
         >Contraseña Olvidada?</a
       >
     </div>
-    <ion-button mode="md" style="--color: white" class="c-backgorund c-button"
+    <ion-button (click)="signIn()" mode="md" style="--color: white" class="c-backgorund c-button"
       >Iniciar sesion</ion-button
     >
     <br />
     <ion-button
+    (click)="signUpGoogle()"
       mode="md"
       style="--background: #fff; color: #010101; font-weight: bold"
     >
