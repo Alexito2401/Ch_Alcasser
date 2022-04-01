@@ -8,9 +8,13 @@
 
     <ion-card-content class="">
       <ion-card-title class="ion-padding c-title"
-        >Espera a un admin verifique tu correo</ion-card-title
+        >Verifique tu correo</ion-card-title
       >
       <ion-text>Contacata tambien a traves de correo</ion-text>
+
+      <ion-text>Si no te ha llegado el correo</ion-text>
+      <br>
+      <ion-button [disabled]="disable" (click)="sendEmail()">Volver a enviar</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

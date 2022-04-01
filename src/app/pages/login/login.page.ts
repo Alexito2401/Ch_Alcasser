@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { Router } from '@angular/router';
+import { tap } from "rxjs/operators";
+
 import { AuthService } from '../../services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
-
+import { Jugador } from '../../interfaces/usuario';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -17,16 +21,16 @@ export class LoginPage implements OnInit {
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private authService: AuthService,
+    private _db: AngularFireDatabase,
     private alertController: AlertController,
-    private loadingController: LoadingController,) { }
+    private loadingController: LoadingController,
+    private router: Router) { }
 
   ngOnInit() {
     this.credentialForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     })
-
-    this.afAuth.currentUser.then(user => console.log(user))
   }
 
   get email() {
@@ -37,57 +41,50 @@ export class LoginPage implements OnInit {
     return this.credentialForm.get('password')
   }
 
-  signUpGoogle() {
-    this.authService.GoogleAuth();
-  }
 
   async signIn() {
 
     const loading = await this.loadingController.create();
     await loading.present();
 
-    this.authService.singIn(this.credentialForm.value).then(user => {
+    this.authService.singIn(this.credentialForm.value).then(async user => {
       localStorage.setItem('uid', user.user.uid)
       loading.dismiss();
+
+      // const newUser = this.afs.collection(`users/`).doc(user.user.uid).valueChanges();
+      // let isNewUser: boolean = false;
+
+      // newUser.subscribe((data: Jugador) => {
+      //   isNewUser = data.newUser;
+      // })
+      // this.afs.doc(`users/${user.user.uid}`).update({ newUser: false }).then(() => {
+      //   newUser.unsuscribe()
+      // });
+
+      const a = await this.afs.collection('users').doc(user.user.uid).get().toPromise().then(data => {
+        const loggedUser: any = data.data()
+        this.afAuth.currentUser.then((currentUser) => {
+          if (currentUser && !currentUser.emailVerified) {
+            // this.router.navigateByUrl('verificar', { replaceUrl: true })
+          } else if (currentUser.emailVerified && loggedUser.newUser) {
+            console.log("Logueado al fin");
+            this.afs.doc(`users/${user.user.uid}`).update({ newUser: false })
+          } else {
+            console.log('Aun no cargado');
+            console.log(loggedUser);
+          }
+        })
+      }).catch(async err => {
+        console.log(err.code)
+        let alert;
+        this.authService.codigoErrores(err.code, this.alertController)
+        loading.dismiss();
+        await alert.present();
+      });
     }, async err => {
       console.log(err.code)
       let alert;
-      switch (err.code) {
-        case "auth/invalid-email":
-          alert = await this.alertController.create({
-            header: ':(',
-            message: "Email no es valido",
-            buttons: ['OK'],
-          });
-          break;
-
-          case "auth/invalid-password" : 
-          alert = await this.alertController.create({
-            header: ':(',
-            message: "Contraseña no es valida",
-            buttons: ['OK'],
-          });
-          break;
-
-        case "auth/internal-error":
-          alert = await this.alertController.create({
-            header: ':(',
-            message: "Error, intentelo otra vez",
-            buttons: ['OK'],
-          });
-          break
-
-        case "auth/network-request-failed":
-          alert = await this.alertController.create({
-            header: ':(',
-            message: "Comprueba la conexion a internet",
-            buttons: ['OK'],
-          });
-          break;
-
-        default:
-          break;
-      }
+      this.authService.codigoErrores(err.code, this.alertController)
       loading.dismiss();
       await alert.present();
     })

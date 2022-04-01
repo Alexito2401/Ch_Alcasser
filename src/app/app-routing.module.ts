@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from "./guards/auth.guard";
+import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard'
+
+const redirectUnauthorizedToLogin = () =>
+  redirectUnauthorizedTo(['/']);
+
+
+const rediretLoggedInToChat = () => redirectLoggedInTo(['/']);
 
 const routes: Routes = [
   // {
@@ -9,15 +17,19 @@ const routes: Routes = [
   // },
   {
     path: '',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'registrarse',
-    loadChildren: () => import('./pages/registrarse/registrarse.module').then( m => m.RegistrarsePageModule)
+    loadChildren: () => import('./pages/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
   },
   {
     path: 'verificar',
-    loadChildren: () => import('./pages/verificar-email/verificar-email.module').then( m => m.VerificarEmailPageModule)
+    loadChildren: () => import('./pages/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 
 ];
@@ -28,4 +40,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
