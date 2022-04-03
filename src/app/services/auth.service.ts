@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   async SingOut() {
-    return this.afAuth.signOut();
+    return await this.afAuth.signOut();
   }
 
   async presentToast(message: string, titulo: string) {
@@ -81,7 +81,7 @@ export class AuthService {
       email: credential.user.email,
       displayName: username,
       posicion: "",
-      equipo: "",
+      equipo: [],
       partidos: [],
       newUser: true
     }
@@ -151,6 +151,13 @@ export class AuthService {
         alert = await alertController.create({
           header: 'Contraseña Incorrecta',
           message: "La contraseña introducida es incorrecta",
+          buttons: ['OK'],
+        });
+        break;
+        case 'auth/too-many-requests': 
+        alert = await alertController.create({
+          header: 'Intentalo de nuevo mas tarde',
+          message: "Respuestas bloqueadas en este dispositivo durante un tiempo",
           buttons: ['OK'],
         });
         break;

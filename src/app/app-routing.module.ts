@@ -16,7 +16,7 @@ const routes: Routes = [
   //   pathMatch: 'full'
   // },
   {
-    path: '',
+    path: 'verificar',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
   },
   {
-    path: 'verificar',
+    path: '',
     loadChildren: () => import('./pages/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
   },
   {

@@ -7,14 +7,21 @@
     </ion-card-header>
 
     <ion-card-content class="">
-      <ion-card-title class="ion-padding c-title"
-        >Verifique tu correo</ion-card-title
+      <ion-card-title class="ion-padding ion-text-nowrap c-title"
+        >Verifiqua tu correo</ion-card-title
       >
-      <ion-text>Contacata tambien a traves de correo</ion-text>
-
-      <ion-text>Si no te ha llegado el correo</ion-text>
-      <br>
-      <ion-button [disabled]="disable" (click)="sendEmail()">Volver a enviar</ion-button>
+      <ion-text
+        >Si tienes problemas contacta con <b>chalcasser@gmail.com</b></ion-text
+      >
+      <br />
+      <br />
+      <div>
+        <small>Si no te ha llegado el correo</small>
+        <br />
+        <ion-button [disabled]="disable" (click)="sendEmail()"
+          >Volver a enviar</ion-button
+        >
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

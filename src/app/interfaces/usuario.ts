@@ -23,6 +23,6 @@ export interface Equipo {
 
 export interface Jugador extends Usuario {
     posicion?: string;
-    equipo?: string;
+    equipo?: Equipo[];
     partidos?: Partido[];
 }
