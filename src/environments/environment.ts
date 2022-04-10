@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebaseConfig : {
+  firebaseConfig: {
     apiKey: "AIzaSyDb4a3pUSNdO1s9j-3_hR0TYl8Nwl-drZ0",
     authDomain: "ch-alcasser.firebaseapp.com",
     projectId: "ch-alcasser",
@@ -13,6 +13,16 @@ export const environment = {
     appId: "1:505461217103:web:2b8bfe0a552899b650573a",
     measurementId: "G-K6EEWCK7RV",
   },
+
+  categorias: [
+    "Benjamin",
+    "Alevin",
+    "Infantil Fememní",
+    "Infantil masculí",
+    "Cadet Masculí",
+    "Juvenil",
+    "Senior B",
+    "Senior A"]
 };
 
 /*

@@ -61,15 +61,25 @@ export class LoginPage implements OnInit {
       //   newUser.unsuscribe()
       // });
 
-      const a = await this.afs.collection('users').doc(user.user.uid).get().toPromise().then(data => {
-        const loggedUser: any = data.data()
+      const a = await this.afs.collection('users').doc<Jugador>(user.user.uid).get().toPromise().then(data => {
+        const loggedUser: Jugador = data.data()
         this.afAuth.currentUser.then((currentUser) => {
           if (currentUser && !currentUser.emailVerified) {
-            // this.router.navigateByUrl('verificar', { replaceUrl: true })
+            this.router.navigateByUrl('verificar', { replaceUrl: true })
           } else if (currentUser.emailVerified && loggedUser.newUser) {
-            console.log("Logueado al fin");
-            this.afs.doc(`users/${user.user.uid}`).update({ newUser: false })
-          } else {
+            this.afs.doc(`users/${user.user.uid}`).update({ newUser: false }).then(() => {
+              this.router.navigateByUrl('modificar-perfil', { replaceUrl: true })
+            }).catch(async (err) => {
+              console.log(err.code)
+              let alert;
+              this.authService.codigoErrores(err.code, this.alertController)
+              loading.dismiss();
+              await alert.present();
+            })
+          } else if (currentUser.emailVerified && !loggedUser.newUser) {
+            this.router.navigateByUrl('modificar', { replaceUrl: true });
+          }
+          else {
             console.log('Aun no cargado');
             console.log(loggedUser);
           }

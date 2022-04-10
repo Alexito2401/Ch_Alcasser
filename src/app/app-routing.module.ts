@@ -16,7 +16,7 @@ const routes: Routes = [
   //   pathMatch: 'full'
   // },
   {
-    path: 'verificar',
+    path: '',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
@@ -24,14 +24,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
   },
   {
-    path: '',
+    path: 'verificar',
     loadChildren: () => import('./pages/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
+  },
+  {
+    path: 'modificar',
+    loadChildren: () => import('./pages/modificar-perfil/modificar-perfil.module').then(m => m.ModificarPerfilPageModule)
   },
   {
     path: '**',
     redirectTo: '/'
-  }
-
+  },
 ];
 
 @NgModule({

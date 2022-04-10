@@ -80,6 +80,7 @@ export class AuthService {
       uid: credential.user.uid,
       email: credential.user.email,
       displayName: username,
+      edad: null,
       posicion: "",
       equipo: [],
       partidos: [],
@@ -154,10 +155,17 @@ export class AuthService {
           buttons: ['OK'],
         });
         break;
-        case 'auth/too-many-requests': 
+      case 'auth/too-many-requests':
         alert = await alertController.create({
           header: 'Intentalo de nuevo mas tarde',
           message: "Respuestas bloqueadas en este dispositivo durante un tiempo",
+          buttons: ['OK'],
+        });
+        break;
+      case 'auth/requires-recent-login':
+        alert = await alertController.create({
+          header: 'Esta operacion es sensible',
+          message: "Esta operacion es sensible y necesita volver a logearse",
           buttons: ['OK'],
         });
         break;

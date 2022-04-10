@@ -1,8 +1,9 @@
 export interface Usuario {
     uid: string;
     email: string;
-    displayName: string;
-    newUser: boolean;
+    displayName?: string;
+    newUser?: boolean;
+    edad?: number;
 }
 
 export interface Partido {

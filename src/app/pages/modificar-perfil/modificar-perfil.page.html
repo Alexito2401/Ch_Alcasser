@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="c-backgorund">
+    <ion-title class="ion-text-center" style="--color: white"
+      >Modificar Perfil</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding c-backgorund">
+  <form class="c-formulario" [formGroup]="uploadForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="l-center">
+          <ion-text class="c-title">Imagen de perfil</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-margin-top l-center">
+          <input
+            #fileDialog
+            style="display: none"
+            type="file"
+            accept="image/,.png,.jpeg,.jpg"
+            formControlName="avatar"
+          />
+          <ion-avatar class="c-avatar">
+            <img
+              (click)="cambiarImagen()"
+              [src]="imageURL"
+              onerror="this.src='./assets/img/default-profile.png';"
+            />
+          </ion-avatar>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="l-center" style="margin-top: 30px">
+        <ion-col
+          class="ion-padding"
+          size-lg="4"
+          size-md="5"
+          size-sm="6"
+          size="12"
+        >
+          <ion-item class="c-input">
+            <ion-input
+              style="--placeholder-color: white"
+              placeholder="Contraseña"
+              formControlName="password"
+              type="password"
+              clearInput="true"
+              mode="ios"
+            >
+            </ion-input>
+            <ion-icon name="id-card"></ion-icon>
+          </ion-item>
+          <div
+            *ngIf="(password.dirty || password.touched) && password.errors"
+            class="errors"
+          >
+            <span style="color: red;" *ngIf="password.errors?.required"
+              >Contraseña es obligatoria</span
+            >
+            <span style="color: red;" *ngIf="password.value.length < 6 && !password.errors?.required"
+              >Longuitud minima de 6 caracteres</span
+            >
+          </div>
+        </ion-col>
+
+        <ion-col
+          class="ion-padding"
+          size-lg="4"
+          size-md="5"
+          size-sm="6"
+          size="12"
+        >
+          <ion-item class="c-input">
+            <ion-input
+              style="--placeholder-color: white"
+              placeholder="Confirmar Contraseña"
+              formControlName="confirmPassword"
+              type="password"
+              clearInput="true"
+              mode="ios"
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            *ngIf="(confirmPassword.dirty || confirmPassword.touched) && confirmPassword.errors"
+            class="errors"
+          >
+            <span style="color: red;" *ngIf="confirmPassword.errors?.required"
+              >Contraseña es obligatoria</span
+            >
+            <span style="color: red;"  *ngIf="confirmPassword.errors?.password"
+              >Longuitud minima de 6 caracteres</span
+            >
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button [disabled]="!uploadForm.valid" (click)="guardarInfoFirebase()">Modificar</ion-button>
+  </form>
+</ion-content>
