@@ -2,11 +2,10 @@ import { Injectable, Input } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import * as firebase from 'firebase/compat';
+import * as firebase from 'firebase/compat/app';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import imageCompression from 'browser-image-compression';
-import { profile } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +22,12 @@ export class UserService {
     private storage: AngularFireStorage) { }
 
 
-  get CurrentUser(): Promise<firebase.default.User> {
-    return this.afAuth.currentUser.then(user => {
-      return user;
-    })
+  get CurrentUser(): firebase.default.User {
+    return firebase.default.auth().currentUser;
+  }
+
+  get CurrentUserPromise(): Promise<firebase.default.User> {
+    return this.afAuth.currentUser;
   }
 
   public tareaCloudStorage(nombreArchivo: string, datos: any) {

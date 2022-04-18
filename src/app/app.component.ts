@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Router } from '@angular/router';
+import { UserService } from './services/user.service';
+import * as firebase from 'firebase/compat/app';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(private so: ScreenOrientation, private afAuth: AngularFireAuth, private router: Router ) {
+  constructor(private so: ScreenOrientation, private afAuth: AngularFireAuth, private userService: UserService) {
+
     let isMobile = false; //initiate as false
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -21,4 +23,22 @@ export class AppComponent {
       this.so.lock(this.so.ORIENTATIONS.PORTRAIT);
     }
   }
+
+  email: string = "";
+  nombre: string = "";
+
+  algo = firebase.default.auth().onAuthStateChanged(user => {
+    this.email = user?.email;
+    this.nombre = user?.displayName;
+  });
+
+  public appPages = [
+    { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
+    { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
+    { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
+    { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
+    { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
+    { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+  ];
+  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 }

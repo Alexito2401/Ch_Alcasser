@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
 	"appName": "CH_Alcasser",
-	"webDir": "www",
+	"webDir": "dist",
 	"bundledWebRuntime": false
 }

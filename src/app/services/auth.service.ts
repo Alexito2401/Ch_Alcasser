@@ -3,7 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
-import { getAuth, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo, applyActionCode } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo, applyActionCode, setPersistence } from "firebase/auth";
+import * as firebase from 'firebase/compat/app';
 import { Usuario, Jugador } from '../interfaces/usuario';
 
 @Injectable({
@@ -43,6 +44,7 @@ export class AuthService {
     return this.afAuth.signInWithEmailAndPassword(email, password)
   }
 
+
   async SingOut() {
     return await this.afAuth.signOut();
   }
@@ -60,17 +62,12 @@ export class AuthService {
 
   }
 
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
-  }
-
   async singUp({ email, username, password }) {
 
 
 
     const credential = await this.afAuth.createUserWithEmailAndPassword(email, password).then((user) => {
-      console.log(user.additionalUserInfo.isNewUser)
+      user.user.updateProfile({ displayName: username })
       return user;
     });
 
@@ -79,12 +76,13 @@ export class AuthService {
     const newUser: Jugador = {
       uid: credential.user.uid,
       email: credential.user.email,
-      displayName: username,
+      displayName: credential.user.displayName,
       edad: null,
       posicion: "",
       equipo: [],
       partidos: [],
-      newUser: true
+      newUser: true,
+      categoria : null
     }
 
     return this.afs.doc(

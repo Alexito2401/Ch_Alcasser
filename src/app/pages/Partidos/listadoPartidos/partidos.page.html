@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="hideMenu()">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{title.value}}</ion-title>
+  </ion-toolbar>
+
+  <div style="display: flex; justify-content: center">
+    <ion-searchbar
+      (ionChange)="search($event)"
+      mode="ios"
+      cancelButtonText="Custom Cancel"
+      placeholder="Buscar por equipo..."
+    ></ion-searchbar>
+
+    <div style="display: flex; align-items: center">
+      <ion-button id="trigger-button" fill="clear">
+        <ion-icon slot="icon-only" name="options"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-popover [dismissOnSelect]="true" trigger="trigger-button">
+      <ng-template>
+        <ion-content style="--background: none">
+          <div>
+            <ion-list>
+              <ion-item *ngFor="let estado of select" (click)="filtrarPor(estado.id)">
+                <ion-label>{{estado.value}}</ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div class="c-app-card">
+    <app-partido-card
+      *ngFor="let partido of partidosFilter | async"
+      [partido]="partido"
+    ></app-partido-card>
+  </div>
+</ion-content>

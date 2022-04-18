@@ -1,10 +1,13 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.alcasser.app',
   appName: 'CH_Alcasser',
-  webDir: 'www',
-  bundledWebRuntime: false
+  webDir: 'dist',
+  bundledWebRuntime: false,
+  plugins: {
+
+  }
 };
 
 export default config;

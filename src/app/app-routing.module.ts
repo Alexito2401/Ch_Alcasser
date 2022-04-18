@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from "./guards/auth.guard";
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard'
 
 const redirectUnauthorizedToLogin = () =>
@@ -17,24 +16,29 @@ const routes: Routes = [
   // },
   {
     path: '',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/Login/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'registrarse',
-    loadChildren: () => import('./pages/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
+    loadChildren: () => import('./pages/Login/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
   },
   {
     path: 'verificar',
-    loadChildren: () => import('./pages/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
+    loadChildren: () => import('./pages/Login/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
   },
   {
     path: 'modificar',
-    loadChildren: () => import('./pages/modificar-perfil/modificar-perfil.module').then(m => m.ModificarPerfilPageModule)
+    loadChildren: () => import('./pages/Login/modificar-perfil/modificar-perfil.module').then(m => m.ModificarPerfilPageModule)
+  },
+  {
+    path: 'partidos',
+    loadChildren: () => import('./pages/Partidos/partidos.module').then( m => m.PartidosModule)
   },
   {
     path: '**',
     redirectTo: '/'
   },
+
 ];
 
 @NgModule({

@@ -1,0 +1,43 @@
+<ion-card mode="ios" class="c-card c-card-background">
+  <ion-card-header
+    style="padding: 20px 0px; display: flex; justify-content: space-around"
+  >
+    <div class="c-card c-card__header">
+      <div class="c-iamge-container">
+        <ion-img
+          class="c-image"
+          src="http://chalcasser.es/wp-content/uploads/2022/01/escut.png"
+        ></ion-img>
+        <ion-card-title class="ion-text-center ion-padding c-title">
+          {{ partido.equipoL }}
+        </ion-card-title>
+      </div>
+
+      <div>
+        <ion-img
+          class="c-image"
+          src="../../../../../assets/img/nules.png"
+        ></ion-img>
+        <ion-card-title class="ion-text-center ion-padding c-title">
+          {{ partido.equipoV }}
+        </ion-card-title>
+      </div>
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="ion-text-center">
+      <h5>{{ partido.fecha | date: "dd/MM/yyyy HH:mm" }}</h5>
+    </div>
+
+    <div
+      *ngIf="partido.estado == Estado.completado"
+      Chart
+      [golesL]="partido.golesL"
+      [golesV]="partido.golesV"
+      [nombreAlcasser]="partido.equipoL"
+    ></div>
+
+    <p class="ion-text-center">{{ partido.estado | titlecase }}</p>
+  </ion-card-content>
+</ion-card>
