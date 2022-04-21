@@ -12,9 +12,10 @@ export interface Partido {
   equipoV: string;
   golesL: number;
   golesV: number;
-  fecha: number;
+  fecha: string;
   categoria: Categoria;
   estado: Estado;
+  stats? : Stats;
 }
 
 export interface Equipo {
@@ -32,6 +33,14 @@ export interface Jugador extends Usuario {
   categoria?: Categoria;
 }
 
+export interface Stats{
+  perdidas : number;
+  recuperadas : number;
+  tiros : number;
+  tarjetasA: number;
+  tarjetasR: number;
+}
+
 export enum Estado {
   suspendido = "suspendido",
   completado = "completado",
@@ -42,11 +51,11 @@ export enum Estado {
 export enum Categoria {
   benjamin = "benjamin",
   alevin = "alevin",
-  infantilF = "infantil Femenino",
-  infantilM = "infantil Masculino",
-  cadeteF = "cadete Femenino",
-  cadeteM = "cadete Masculino",
+  infantilF = "infantil F",
+  infantilM = "infantil M",
+  cadeteF = "cadete F",
+  cadeteM = "cadete M",
   Juvenil = "juvenil",
   SeniorA = "senior A",
-  SeniorB = "seniorB"
+  SeniorB = "senior B"
 }

@@ -2,7 +2,7 @@
   "name": "CH_Alcasser",
   "version": "0.0.6",
   "author": "Alex Bernal",
-  "homepage": "https://ionicframework.com/",
+  "homepage": "http://chalcasser.es/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

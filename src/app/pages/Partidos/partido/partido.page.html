@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="padding-inline: 0" mode="ios"
+      >{{partido.equipoL}} VS {{partido.equipoV}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="c-container">
+    <div class="c-cosa1">
+      <div style="display: flex; justify-content: space-around">
+        <div>
+          <img
+            class="c-image ion-margin-top"
+            [src]="imageLocal"
+            alt="Imagen de {{partido.equipoL}}"
+          />
+          <br />
+          <h2>{{partido.golesL}}</h2>
+        </div>
+
+        <b style="margin-top: 20%">VS</b>
+
+        <div>
+          <img
+            class="c-image ion-margin-top"
+            [src]="imageVisitante"
+            alt="Imagen de {{partido.equipoV}}"
+          />
+          <br />
+          <h2>{{partido.golesV}}</h2>
+        </div>
+      </div>
+
+      <div class="c-cosa">
+        <div class="c-neon ion-text-center">Sin Informacion</div>
+      </div>
+    </div>
+  </div>
+</ion-content>

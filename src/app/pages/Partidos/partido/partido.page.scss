@@ -1,0 +1,128 @@
+.c-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.c-cosa1 {
+  height: 40%;
+  width: 100%;
+
+  background: -moz-linear-gradient(
+    43deg,
+    rgba(1, 1, 1, 1) 0%,
+    rgba(255, 1, 2, 1) 100%
+  );
+
+  background: -webkit-linear-gradient(
+    43deg,
+    rgba(1, 1, 1, 1) 0%,
+    rgba(255, 1, 2, 1) 100%
+  );
+
+  background: -o-linear-gradient(
+    43deg,
+    rgba(1, 1, 1, 1) 0%,
+    rgba(255, 1, 2, 1) 100%
+  );
+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#010101', endColorstr='#FF0102', GradientType=1 );
+
+  background: -ms-linear-gradient(
+    43deg,
+    rgba(1, 1, 1, 1) 0%,
+    rgba(255, 1, 2, 1) 100%
+  );
+
+  background: linear-gradient(
+    43deg,
+    rgba(1, 1, 1, 1) 0%,
+    rgba(255, 1, 2, 1) 100%
+  );
+}
+
+.c-cosa {
+  height: 70%;
+  width: 100%;
+  position: absolute;
+  background-color: white;
+  border-radius: 40px 40px 0 0;
+  bottom: 0;
+}
+
+.c-image {
+  width: 175px;
+  height: 175px;
+}
+
+@media (min-width: 0px) {
+  .c-image {
+    width: 75px;
+    height: 75px;
+  }
+
+  .c-neon {
+    margin-top: auto;
+    animation: neonAnim 6s alternate-reverse infinite;
+    color: #0C0C0C;
+    font-family: Cursive;
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 576px) {
+  .c-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .c-neon {
+    margin-top: auto;
+    animation: neonAnim 6s alternate-reverse infinite;
+    color: #0C0C0C;
+    font-family: Cursive;
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .c-image {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+  }
+
+  .c-neon {
+    margin-top: auto;
+    animation: neonAnim 6s alternate-reverse infinite;
+    color: #0C0C0C;
+    font-family: Cursive;
+    font-size: 36px;
+  }
+}
+
+@media (min-width: 992px) {
+  .c-image {
+    width: 175px;
+    height: 175px;
+  }
+
+  .c-neon {
+    margin-top: auto;
+    animation: neonAnim 6s alternate-reverse infinite;
+    color: #0c0c0c;
+    font-family: Cursive;
+    font-size: 48px;
+  }
+}
+
+@keyframes neonAnim {
+  from {
+    text-shadow: 0 0 23px rgba(12, 12, 12, 0.7), 0 0 53px rgba(12, 12, 12, 0.7),
+      0 0 113px rgba(12, 12, 12, 0.7);
+  }
+  to {
+    text-shadow: 0 0 18px rgba(12, 12, 12, 0.7), 0 0 33px rgba(12, 12, 12, 0.7),
+      0 0 73px rgba(12, 12, 12, 0.7);
+  }
+}
