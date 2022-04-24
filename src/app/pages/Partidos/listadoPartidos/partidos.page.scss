@@ -8,3 +8,11 @@ ion-content {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+ion-item:hover{
+  --background: rgb(37, 37, 37);
+}
+
+ion-item:active {
+  --background: rgb(37, 37, 37);
+}

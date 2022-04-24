@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="padding-inline: 0" mode="ios"
+      >{{partido.equipoL}} VS {{partido.equipoV}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="c-container">
+    <div class="c-background-superior">
+      <div style="display: flex; justify-content: space-around">
+        <div class="l-vertical">
+          <img
+            class="c-image ion-margin-top"
+            [src]="imageLocal"
+            alt="Imagen de {{partido.equipoL}}"
+          />
+          <br />
+          <h2>{{partido.golesL}}</h2>
+        </div>
+
+        <b style="margin-top: 20%">VS</b>
+
+        <div class="l-vertical">
+          <img
+            class="c-image ion-margin-top"
+            [src]="imageVisitante"
+            alt="Imagen de {{partido.equipoV}}"
+          />
+          <br />
+          <h2>{{partido.golesV}}</h2>
+        </div>
+      </div>
+
+      <div class="c-background-inferior">
+        <div
+          *ngIf="statsExiste; else infoPartido"
+          class="ion-text-center c-neon ion-padding"
+        >
+          Sin Informacion
+        </div>
+
+        <ng-template #infoPartido>
+          <div>
+            <h2 class="ion-text-center ion-padding c-neon">Estadisticas</h2>
+
+            <div style="display: flex; justify-content: flex-end">
+              <ion-button
+                mode="md"
+                size="small"
+                class="round"
+                (click)="cambiarPorcentajeNumero()"
+                >{{!chart ? "Mostrar Porcentajes" :
+                "MostrarNumeros"}}</ion-button
+              >
+            </div>
+
+            <div style="margin-top: 10px">
+              <div class="c-texto-chart">
+                <small><b>Perdidas</b></small>
+                <small><b>Recuperadas</b></small>
+              </div>
+              <div
+                style="margin: 0 20px 0 20px"
+                StatsChart
+                [partido]="partido"
+                [stat1]="partido.stats.perdidas"
+                [stat2]="partido.stats.recuperadas"
+                [mostarPorcentaje]="chart"
+              ></div>
+            </div>
+
+            <div style="margin-top: 10px">
+              <div class="c-texto-chart">
+                <small><b>Fallos</b></small>
+                <small><b>Goles</b></small>
+              </div>
+              <div
+                style="margin: 0 20px 0 20px"
+                StatsChart
+                [partido]="partido"
+                [stat1]="partido.stats.tiros - (partido.equipoL == 'Alcasser' ? partido.golesL : partido.golesV)"
+                [stat2]="partido.equipoL == 'Alcasser' ? partido.golesL : partido.golesV"
+                [mostarPorcentaje]="chart"
+              ></div>
+            </div>
+
+            <div style="margin-top: 10px">
+              <div class="c-texto-chart">
+                <small><b>Paradas</b></small>
+                <small><b>Marcadas</b></small>
+              </div>
+              <div
+                style="margin: 0 20px 0 20px"
+                StatsChart
+                [partido]="partido"
+                [stat1]="partido.stats.paradas"
+                [stat2]="partido.equipoL == 'Alcasser' ? partido.golesV : partido.golesL"
+                [mostarPorcentaje]="chart"
+              ></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around">
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <ion-img
+                class="c-image-tarjeta"
+                src="../../../../assets/img/tarjeta amarilla.png"
+              ></ion-img>
+              <ion-text style="color: black"
+                ><h4>{{partido.stats.tarjetasA}}</h4></ion-text
+              >
+            </div>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <ion-img
+                class="c-image-tarjeta"
+                src="../../../../assets/img/tarjeta roja.png"
+              ></ion-img>
+              <ion-text style="color: black"
+                ><h4>{{partido.stats.tarjetasR}}</h4></ion-text
+              >
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,25 +1,31 @@
-<ion-card mode="ios" class="c-card c-card-background">
+<ion-card (click)="presentModal(partido)" mode="ios" class="c-card c-card-background">
   <ion-card-header
     style="padding: 20px 0px; display: flex; justify-content: space-around"
   >
-    <div class="c-card c-card__header">
+    <div  class="c-card c-card__header">
       <div class="c-iamge-container">
         <ion-img
           class="c-image"
-          src="http://chalcasser.es/wp-content/uploads/2022/01/escut.png"
+          [src]="urlLocal"
         ></ion-img>
-        <ion-card-title class="ion-text-center ion-padding c-title">
+        <ion-card-title style="--color: white;" class="ion-text-center ion-padding c-title">
           {{ partido.equipoL }}
+          <div *ngIf="partido.equipoL == 'Alcasser'">
+            {{ partido.categoria | titlecase }}
+          </div>
         </ion-card-title>
       </div>
 
       <div>
         <ion-img
           class="c-image"
-          src="../../../../../assets/img/nules.png"
+          [src]="urlVisitante"
         ></ion-img>
-        <ion-card-title class="ion-text-center ion-padding c-title">
+        <ion-card-title style="--color: white;" class="ion-text-center ion-padding c-title">
           {{ partido.equipoV }}
+          <div *ngIf="partido.equipoV == 'Alcasser'">
+            {{ partido.categoria | titlecase }}
+          </div>
         </ion-card-title>
       </div>
     </div>

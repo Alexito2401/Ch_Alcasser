@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="hideMenu()">
-        <ion-icon name="menu-outline"></ion-icon>
-      </ion-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{title.value}}</ion-title>
   </ion-toolbar>
@@ -26,8 +24,12 @@
       <ng-template>
         <ion-content style="--background: none">
           <div>
-            <ion-list>
-              <ion-item *ngFor="let estado of select" (click)="filtrarPor(estado.id)">
+            <ion-list class="ion-text-wrap">
+              <ion-item
+                *ngFor="let estado of select"
+                (click)="filtrarPor(estado.id)"
+                style=""
+              >
                 <ion-label>{{estado.value}}</ion-label>
               </ion-item>
             </ion-list>
@@ -39,6 +41,21 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher
+    slot="fixed"
+    disabled="false"
+    (ionRefresh)="doRefresh($event)"
+    pullFactor="0.5"
+    pullMin="100"
+    pullMax="200"
+  >
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="bubbles"
+      refreshingText="Refreshing....."
+    ></ion-refresher-content>
+  </ion-refresher>
   <div class="c-app-card">
     <app-partido-card
       *ngFor="let partido of partidosFilter | async"

@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Partido, Categoria, Jugador, Estado } from '../../../interfaces/usuario';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserService } from '../../../services/user.service';
-import { doc, getDoc } from "firebase/firestore";
 import * as firebase from 'firebase/compat/app';
-import { debounceTime, filter, flatMap, map, mapTo, switchMap, } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
-import { fromArray } from "rxjs/internal/observable/fromArray";
+import { doc, getDoc } from "firebase/firestore";
+import { PartidosService } from '../../../services/partidos.service';
 
 interface select {
   id: number,
@@ -52,34 +52,38 @@ export class PartidosPage implements OnInit {
   partidosFilter: Observable<Partido[]>;
   currentUser: Jugador = null;
   db = firebase.default.firestore();
+  @ViewChild('filtrado') filtrado : ElementRef;
 
 
-  constructor(private menu: MenuController, private userService: UserService, private afs: AngularFirestore) {
+  constructor(private menu: MenuController, private userService: UserService, private afs: AngularFirestore, public modalController: ModalController, private partidoService: PartidosService) {
 
   }
 
   async ngOnInit() {
+    try {
+      const docRef = doc(this.db, "users", firebase.default.auth().currentUser?.uid);
+      const docSnap = await getDoc(docRef);
 
-    const docRef = doc(this.db, "users", this.userService.CurrentUser.uid);
-    const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this.currentUser = docSnap.data() as Jugador;
 
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      this.currentUser = docSnap.data() as Jugador;
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    } catch (error) {
 
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
     }
 
-    console.log(this.currentUser);
-
-
-    if (sessionStorage.getItem('partidos')) {
-      console.log('Session storage');
+    if (sessionStorage.getItem('partidos') && JSON.parse(sessionStorage.getItem('partidos')) != []) {
       this.partidos = JSON.parse(sessionStorage.getItem('partidos'));
-      this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
-      console.log(this.partidosFilter);
+
+      if (!this.currentUser) {
+        this.partidosFilter = of([...this.partidos])
+      } else {
+        this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+      }
+
     } else {
       this.afs
         .collection<Partido>("partidos")
@@ -90,8 +94,6 @@ export class PartidosPage implements OnInit {
           });
           sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
           this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
-          console.log(this.partidosFilter);
-
         })
     }
   }
@@ -104,7 +106,7 @@ export class PartidosPage implements OnInit {
     query = this.reemplazarAcentos(query.target.value.toLowerCase())
 
     if (!query) {
-    this.filtrarPor(this.title.id);
+      this.filtrarPor(this.title.id);
     } else {
       this.partidosFilter = this.partidosFilter.pipe(
         map(data => data.filter((partido) => this.reemplazarAcentos(partido.equipoL.toLowerCase()).includes(query) || this.reemplazarAcentos(partido.equipoV.toLowerCase()).includes(query))),
@@ -123,6 +125,24 @@ export class PartidosPage implements OnInit {
     var expr = /[áàéèíìóòúùñ]/ig;
     var res = cadena.replace(expr, function (e) { return chars[e] });
     return res;
+  }
+
+  async doRefresh(event) {
+    sessionStorage.removeItem('partidos');
+
+   await this.afs
+      .collection<Partido>("partidos")
+      .get()
+      .subscribe((ss) => {
+        ss.docs.forEach((doc) => {
+          this.partidos.push(doc.data());
+        });
+        sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
+        const id = this.select.find(e => this.title.value == e.value);
+        this.filtrarPor(id.id)
+      })
+
+      event.target.complete();
   }
 
   filtrarPor(id: number) {
@@ -149,5 +169,156 @@ export class PartidosPage implements OnInit {
       default:
         break;
     }
+  }
+
+  insertar() {
+    const nuevosPartidos: Partido[] = [
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Ontinyent',
+        equipoV: 'Alcasser',
+        golesL: 10,
+        golesV: 25,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '10/02/2021 16:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Alcasser',
+        equipoV: 'Florida',
+        golesL: 21,
+        golesV: 25,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '10/17/2021 12:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Benetusser',
+        equipoV: 'Alcasser',
+        golesL: 27,
+        golesV: 22,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '10/24/2021 12:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Alcasser',
+        equipoV: 'Xativa',
+        golesL: 23,
+        golesV: 31,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '10/30/2021 18:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Xativa B',
+        equipoV: 'Alcasser',
+        golesL: 25,
+        golesV: 16,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '11/06/2021 17:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Alcasser',
+        equipoV: 'Quart B',
+        golesL: 28,
+        golesV: 22,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '11/13/2021 19:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Buñol',
+        equipoV: 'Alcasser',
+        golesL: 31,
+        golesV: 18,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '11/21/2021 11:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoL: 'Alcasser',
+        equipoV: 'Ontinyent',
+        golesL: 24,
+        golesV: 16,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '27/11/2021 18:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Alcasser',
+        equipoL: 'Florida',
+        golesL: 31,
+        golesV: 26,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '12/18/2021 16:30'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Benetusser',
+        equipoL: 'Alcasser',
+        golesL: 22,
+        golesV: 35,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '01/15/2022 18:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Alcasser',
+        equipoL: 'Xativa',
+        golesL: 36,
+        golesV: 19,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '01/22/2022 19:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Xativa B',
+        equipoL: 'Alcasser',
+        golesL: 25,
+        golesV: 22,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '02/08/2022 16:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Alcasser',
+        equipoL: 'Quart B',
+        golesL: 19,
+        golesV: 23,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '02/05/2022 16:00'
+      },
+      {
+        uid: this.partidoService.create_UUID(),
+        equipoV: 'Buñol',
+        equipoL: 'Alcasser',
+        golesL: 18,
+        golesV: 30,
+        categoria: Categoria.SeniorB,
+        estado: Estado.completado,
+        fecha: '02/19/2022 18:00'
+      },
+    ];
+
+    nuevosPartidos.forEach(partido => {
+      return this.afs.doc(
+        `partidos/${partido.uid}`
+      ).set(partido)
+    })
   }
 }

@@ -1,9 +1,15 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane when="(min-width: 3000px)" contentId="main-content">
     <ion-menu class="c-menu" contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header class="ion-padding">{{ nombre }}</ion-list-header>
+          <ion-list-header class="ion-padding">
+            <ion-text style="width: 50%"
+              ><h4>{{ nombre }}</h4></ion-text
+            >
+            <ion-avatar style="margin-left: auto;">
+              <ion-img [src]="urlImgUser"></ion-img> </ion-avatar
+          ></ion-list-header>
           <ion-note class="ion-padding">{{ email }}</ion-note>
 
           <ion-menu-toggle
@@ -17,11 +23,7 @@
               detail="false"
               routerLinkActive="selected"
             >
-              <ion-icon
-                slot="start"
-                [ios]="p.icon + '-outline'"
-                [md]="p.icon + '-sharp'"
-              ></ion-icon>
+              <ion-icon slot="start" [ios]="p.icon" [md]="p.icon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>

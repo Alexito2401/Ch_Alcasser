@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { PartidosModule } from './pages/Partidos/partidos.module';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

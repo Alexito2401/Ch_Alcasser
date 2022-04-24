@@ -167,6 +167,12 @@ export class AuthService {
           buttons: ['OK'],
         });
         break;
+        case 'permission-denied' :
+        alert = await alertController.create({
+          header: 'Permiso denegado',
+          message: "No dispones de los suficientes permisos",
+          buttons: ['OK'],
+        });
 
       default:
         alert = await alertController.create({

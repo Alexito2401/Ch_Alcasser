@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Router } from '@angular/router';
-import { tap } from "rxjs/operators";
 
 import { AuthService } from '../../../services/auth.service';
 import { AlertController, LoadingController, MenuController } from '@ionic/angular';
@@ -29,7 +27,6 @@ export class LoginPage implements OnInit {
     private validatorService: ValidatorsService,
     private menu : MenuController,
     ) {
-
       this.menu.enable(false);
       this.menu.swipeGesture(false)
 
@@ -65,16 +62,6 @@ export class LoginPage implements OnInit {
       localStorage.setItem('uid', user.user.uid)
       loading.dismiss();
 
-      // const newUser = this.afs.collection(`users/`).doc(user.user.uid).valueChanges();
-      // let isNewUser: boolean = false;
-
-      // newUser.subscribe((data: Jugador) => {
-      //   isNewUser = data.newUser;
-      // })
-      // this.afs.doc(`users/${user.user.uid}`).update({ newUser: false }).then(() => {
-      //   newUser.unsuscribe()
-      // });
-
       const a = await this.afs.collection('users').doc<Jugador>(user.user.uid).get().toPromise().then(data => {
         const loggedUser: Jugador = data.data()
         this.afAuth.currentUser.then((currentUser) => {
@@ -92,6 +79,7 @@ export class LoginPage implements OnInit {
             })
           } else if (currentUser.emailVerified && !loggedUser.newUser) {
             this.router.navigateByUrl('partidos/partidos', { replaceUrl: true });
+
             this.menu.enable(true);
             this.menu.swipeGesture(true)
           }
