@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="padding: 0">CH Alcasser {{equipo.categoria}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="c-list ion-padding">
+    <h1>Jugadores</h1>
+    <hr
+      style="
+        height: 2px;
+        width: 100%;
+        border-width: 1px;
+        background-color: #fff;
+      "
+    />
+
+    <div
+      class="c-card ion-padding"
+      *ngFor="let jugadorOrdenado of jugadoresOrdenados"
+    >
+      <h4 class="c-neon">{{jugadorOrdenado.posicion | titlecase}}</h4>
+
+      <ion-item *ngFor="let jugadorFoto of jugadorOrdenado.jugadores">
+        <ion-avatar>
+          <ion-img [src]="jugadorFoto.foto"> </ion-img>
+        </ion-avatar>
+
+        <ion-text class="ion-margin-start"
+          ><p>{{jugadorFoto.jugador.nombre}}</p></ion-text
+        >
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

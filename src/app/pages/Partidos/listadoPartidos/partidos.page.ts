@@ -52,10 +52,10 @@ export class PartidosPage implements OnInit {
   partidosFilter: Observable<Partido[]>;
   currentUser: Jugador = null;
   db = firebase.default.firestore();
-  @ViewChild('filtrado') filtrado : ElementRef;
+  @ViewChild('filtrado') filtrado: ElementRef;
 
 
-  constructor(private menu: MenuController, private userService: UserService, private afs: AngularFirestore, public modalController: ModalController, private partidoService: PartidosService) {
+  constructor(private userService: UserService, private afs: AngularFirestore, public modalController: ModalController, private partidoService: PartidosService) {
 
   }
 
@@ -66,10 +66,6 @@ export class PartidosPage implements OnInit {
 
       if (docSnap.exists()) {
         this.currentUser = docSnap.data() as Jugador;
-
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
       }
     } catch (error) {
 
@@ -77,7 +73,6 @@ export class PartidosPage implements OnInit {
 
     if (sessionStorage.getItem('partidos') && JSON.parse(sessionStorage.getItem('partidos')) != []) {
       this.partidos = JSON.parse(sessionStorage.getItem('partidos'));
-
       if (!this.currentUser) {
         this.partidosFilter = of([...this.partidos])
       } else {
@@ -96,10 +91,6 @@ export class PartidosPage implements OnInit {
           this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
         })
     }
-  }
-
-  hideMenu() {
-    this.menu.isEnabled().then(value => value ? this.menu.enable(false) : this.menu.enable(true));
   }
 
   search(query) {
@@ -130,7 +121,7 @@ export class PartidosPage implements OnInit {
   async doRefresh(event) {
     sessionStorage.removeItem('partidos');
 
-   await this.afs
+    await this.afs
       .collection<Partido>("partidos")
       .get()
       .subscribe((ss) => {
@@ -142,7 +133,7 @@ export class PartidosPage implements OnInit {
         this.filtrarPor(id.id)
       })
 
-      event.target.complete();
+    event.target.complete();
   }
 
   filtrarPor(id: number) {
@@ -169,156 +160,5 @@ export class PartidosPage implements OnInit {
       default:
         break;
     }
-  }
-
-  insertar() {
-    const nuevosPartidos: Partido[] = [
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Ontinyent',
-        equipoV: 'Alcasser',
-        golesL: 10,
-        golesV: 25,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '10/02/2021 16:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Alcasser',
-        equipoV: 'Florida',
-        golesL: 21,
-        golesV: 25,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '10/17/2021 12:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Benetusser',
-        equipoV: 'Alcasser',
-        golesL: 27,
-        golesV: 22,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '10/24/2021 12:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Alcasser',
-        equipoV: 'Xativa',
-        golesL: 23,
-        golesV: 31,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '10/30/2021 18:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Xativa B',
-        equipoV: 'Alcasser',
-        golesL: 25,
-        golesV: 16,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '11/06/2021 17:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Alcasser',
-        equipoV: 'Quart B',
-        golesL: 28,
-        golesV: 22,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '11/13/2021 19:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Buñol',
-        equipoV: 'Alcasser',
-        golesL: 31,
-        golesV: 18,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '11/21/2021 11:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoL: 'Alcasser',
-        equipoV: 'Ontinyent',
-        golesL: 24,
-        golesV: 16,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '27/11/2021 18:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Alcasser',
-        equipoL: 'Florida',
-        golesL: 31,
-        golesV: 26,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '12/18/2021 16:30'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Benetusser',
-        equipoL: 'Alcasser',
-        golesL: 22,
-        golesV: 35,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '01/15/2022 18:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Alcasser',
-        equipoL: 'Xativa',
-        golesL: 36,
-        golesV: 19,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '01/22/2022 19:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Xativa B',
-        equipoL: 'Alcasser',
-        golesL: 25,
-        golesV: 22,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '02/08/2022 16:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Alcasser',
-        equipoL: 'Quart B',
-        golesL: 19,
-        golesV: 23,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '02/05/2022 16:00'
-      },
-      {
-        uid: this.partidoService.create_UUID(),
-        equipoV: 'Buñol',
-        equipoL: 'Alcasser',
-        golesL: 18,
-        golesV: 30,
-        categoria: Categoria.SeniorB,
-        estado: Estado.completado,
-        fecha: '02/19/2022 18:00'
-      },
-    ];
-
-    nuevosPartidos.forEach(partido => {
-      return this.afs.doc(
-        `partidos/${partido.uid}`
-      ).set(partido)
-    })
   }
 }

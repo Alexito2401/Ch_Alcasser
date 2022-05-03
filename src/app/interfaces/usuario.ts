@@ -1,7 +1,7 @@
 export interface Usuario {
   uid: string;
   email: string;
-  displayName?: string;
+  nombre?: string;
   newUser?: boolean;
   edad?: number;
 }
@@ -21,14 +21,14 @@ export interface Partido {
 export interface Equipo {
   uid: string;
   categoria?: Categoria;
-  jugadores: Jugador[];
+  jugadores: string[];
   partidos?: Partido[];
   Entrenador: Usuario;
 }
 
 export interface Jugador extends Usuario {
-  posicion?: string;
-  equipo?: Equipo[];
+  posicion?: Posicion;
+  equipo?: string[];
   partidos?: Partido[];
   categoria?: Categoria;
 }
@@ -54,9 +54,18 @@ export enum Categoria {
   alevin = "alevin",
   infantilF = "infantil F",
   infantilM = "infantil M",
-  cadeteF = "cadete F",
-  cadeteM = "cadete M",
+  cadete = "cadete",
   Juvenil = "juvenil",
   SeniorA = "senior A",
   SeniorB = "senior B"
+}
+
+export enum Posicion {
+  extremoD = "extremo derecho",
+  extremoI = "extremo izquierdo",
+  lateralD = "lateral derecho",
+  lateralI = "lateral izquierdo",
+  central = "central",
+  pibote = "pibote",
+  portero = "portero",
 }

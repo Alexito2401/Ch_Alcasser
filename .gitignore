@@ -19,6 +19,7 @@ firebase.json
 log.txt
 npm-debug.log*
 
+/.history
 /.angular
 /.firebase
 /.idea

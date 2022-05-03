@@ -1,0 +1,18 @@
+@media (min-width: 0px) {
+  .c-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .c-container {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.c-blur {
+  background-color: #ffffff10;
+  backdrop-filter: blur(12px);
+}

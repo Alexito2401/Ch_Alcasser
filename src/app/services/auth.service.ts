@@ -3,9 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
-import { getAuth, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo, applyActionCode, setPersistence } from "firebase/auth";
-import * as firebase from 'firebase/compat/app';
-import { Usuario, Jugador } from '../interfaces/usuario';
+import { Jugador } from '../interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -76,9 +74,9 @@ export class AuthService {
     const newUser: Jugador = {
       uid: credential.user.uid,
       email: credential.user.email,
-      displayName: credential.user.displayName,
+      nombre: credential.user.displayName,
       edad: null,
-      posicion: "",
+      posicion: null,
       equipo: [],
       partidos: [],
       newUser: true,

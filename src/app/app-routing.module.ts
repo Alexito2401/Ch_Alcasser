@@ -35,9 +35,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/Partidos/partidos.module').then( m => m.PartidosModule)
   },
   {
+    path: 'equipo',
+    loadChildren: () => import('./pages/Mi_equipo/mi-equipo.module').then( m => m.MiEquipoModule)
+  },
+  {
     path: '**',
     redirectTo: '/'
   },
+
+
 
 ];
 

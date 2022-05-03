@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { PartidosService } from 'src/app/services/partidos.service';
 import { Partido, Estado } from '../../../../interfaces/usuario';
-import { PartidosService } from '../../../../services/partidos.service';
 import { PartidoPage } from '../../partido/partido.page';
 
 @Component({

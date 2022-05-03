@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import * as firebase from 'firebase/compat/app';
 import { PartidosService } from '../../../services/partidos.service';
-import { Partido, Stats } from '../../../interfaces/usuario';
-import { StatsChartDirective } from '../directives/stats-chart.directive';
+import { Partido } from '../../../interfaces/usuario';
 import { convertToParamMap } from '@angular/router';
 
 @Component({

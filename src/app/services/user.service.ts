@@ -6,6 +6,7 @@ import * as firebase from 'firebase/compat/app';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import imageCompression from 'browser-image-compression';
+import { Jugador } from 'src/app/interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,11 @@ import imageCompression from 'browser-image-compression';
 export class UserService {
 
   private basePath = '/profiles';
-  private UploadTask: firebase.default.storage.UploadTask
   fb;
   downloadURL: Observable<string>;
 
   constructor(private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private storage: AngularFireStorage) { }
+    private storage: AngularFireStorage, private afs: AngularFirestore) { }
 
 
   get CurrentUser(): firebase.default.User {
@@ -28,6 +27,10 @@ export class UserService {
 
   get CurrentUserPromise(): Promise<firebase.default.User> {
     return this.afAuth.currentUser;
+  }
+
+  public currentUserFireStore() {
+    return this.afs.collection('users').doc<Jugador>(this.CurrentUser.uid).get();
   }
 
   public tareaCloudStorage(nombreArchivo: string, datos: any) {
@@ -73,6 +76,10 @@ export class UserService {
         console.log(url)
       }
     })
+  }
+
+  getUserIamge = async (uid: string) => {
+    return await firebase.default.storage().ref().child(`profiles/${uid}`).getDownloadURL();
   }
 }
 

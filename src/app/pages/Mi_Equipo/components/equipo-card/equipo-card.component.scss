@@ -1,0 +1,50 @@
+@media (min-width: 0px) {
+  .c-card {
+    width: 100%;
+    --color: #fff;
+    color: #fff;
+  }
+
+  .c-text {
+    font-size: 14px;
+
+    & > b {
+      font-size:16px;
+    }
+  }
+
+  .l-padding-l-1 {
+    padding: 0 0 0 10px !important;
+  }
+
+  .c-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .ion-padding-1{
+    padding: 10px !important;
+    padding-bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .c-card {
+    width: 400px;
+    --color: #fff;
+    color: #fff;
+  }
+
+  .c-text {
+    font-size: 24px;
+
+    & > b {
+      font-size: 30px;
+    }
+  }
+
+  .c-image {
+    width: 100px;
+    height: 100px;
+  }
+}

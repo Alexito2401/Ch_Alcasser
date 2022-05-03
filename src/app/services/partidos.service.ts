@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/compat/app';
-import { url } from 'inspector';
+import { Equipo } from '../interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,8 @@ import { url } from 'inspector';
 export class PartidosService {
 
   constructor() { }
+
+  equipo: Equipo = null;
 
   create_UUID() {
     var dt = new Date().getTime();
@@ -19,7 +21,7 @@ export class PartidosService {
     return uuid;
   }
 
-  async getIamge(equipo: string) {
+  getIamge = async (equipo: string) => {
     if (equipo.split(' ').length >= 2) {
       equipo = equipo.split(' ')[0];
     }
@@ -27,10 +29,19 @@ export class PartidosService {
     if (localStorage.getItem(equipo)) {
       return localStorage.getItem(equipo);
     } else {
-      return await firebase.default.storage().ref().child(`equipos/${equipo.toLowerCase()}.png`).getDownloadURL().then(url => {
+      return firebase.default.storage().ref().child(`equipos/${equipo.toLowerCase()}.png`).getDownloadURL().then(url => {
         localStorage.setItem(equipo, url);
         return url;
       });
     }
   }
+
+  setEquipo(equipo: Equipo) {
+    this.equipo = equipo;
+  }
+
+  getEquipo() {
+    return this.equipo;
+  }
+
 }
