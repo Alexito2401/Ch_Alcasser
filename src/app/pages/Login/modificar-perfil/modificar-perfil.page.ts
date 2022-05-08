@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
+import * as firebase from 'firebase/compat/app';
+import { filter } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../services/user.service';
 import { ValidatorsService } from '../../../services/validators.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modificar-perfil',
@@ -35,7 +37,17 @@ export class ModificarPerfilPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.userService.CurrentUser)
+    if (this.userService.getPreviousUrl() != '/') {
+      this.uploadForm = this.fb.group({
+        avatar: [null],
+        password: ['', [Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.minLength(6)]],
+      }, {
+        validators: [this.vs.camposIguales('password', 'confirmPassword')]
+      })
+    }
+
+    this.imageURL = firebase.default.auth().currentUser.photoURL ?? ''
   }
 
   get password() {
@@ -47,11 +59,10 @@ export class ModificarPerfilPage implements OnInit {
 
   guardarInfoFirebase() {
 
-    this.userService.CurrentUserPromise.then(user => {
-      user.updatePassword(this.password.value);
-      this.userService.onFileSelect(this.event, user.uid);
-
-    }).then(() => this.router.navigateByUrl('partidos/partidos', { replaceUrl: true }))
+    const user = this.userService.getUser();
+    user.updatePassword(this.password.value);
+    this.userService.onFileSelect(this.event, user.uid);
+    this.router.navigateByUrl('partidos/partidos', { replaceUrl: true })
   }
 
 

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title style="padding: 0">CH Alcasser {{equipo.categoria}}</ion-title>
+    <ion-title style="padding: 0">CH Alcasser {{equipo?.categoria}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +23,7 @@
       class="c-card ion-padding"
       *ngFor="let jugadorOrdenado of jugadoresOrdenados"
     >
-      <h4 class="c-neon">{{jugadorOrdenado.posicion | titlecase}}</h4>
+      <h4 class="c-neon">{{jugadorOrdenado?.posicion | titlecase}}</h4>
 
       <ion-item *ngFor="let jugadorFoto of jugadorOrdenado.jugadores">
         <ion-avatar>
@@ -31,7 +31,7 @@
         </ion-avatar>
 
         <ion-text class="ion-margin-start"
-          ><p>{{jugadorFoto.jugador.nombre}}</p></ion-text
+          ><p>{{jugadorFoto?.jugador.nombre}}</p></ion-text
         >
       </ion-item>
     </div>

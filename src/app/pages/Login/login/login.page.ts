@@ -25,12 +25,12 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
     private authService: AuthService,
     private validatorService: ValidatorsService,
-    private menu : MenuController,
-    ) {
-      this.menu.enable(false);
-      this.menu.swipeGesture(false)
+    private menu: MenuController,
+  ) {
+    this.menu.enable(false);
+    this.menu.swipeGesture(false)
 
-     }
+  }
 
   ngOnInit() {
     this.credentialForm = this.fb.group({
@@ -47,7 +47,7 @@ export class LoginPage implements OnInit {
     return this.credentialForm.get('password')
   }
 
-  passwordVisible(){
+  passwordVisible() {
 
     this.passwordType = this.passwordType == 'password' ? 'text' : 'password';
 
@@ -59,16 +59,16 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     this.authService.singIn(this.credentialForm.value).then(async user => {
-      localStorage.setItem('uid', user.user.uid)
+      const uid = localStorage.getItem('uid')
       loading.dismiss();
 
-      const a = await this.afs.collection('users').doc<Jugador>(user.user.uid).get().toPromise().then(data => {
+      await this.afs.collection('users').doc<Jugador>(uid).get().toPromise().then(data => {
         const loggedUser: Jugador = data.data()
         this.afAuth.currentUser.then((currentUser) => {
           if (currentUser && !currentUser.emailVerified) {
             this.router.navigateByUrl('verificar', { replaceUrl: true })
           } else if (currentUser.emailVerified && loggedUser.newUser) {
-            this.afs.doc(`users/${user.user.uid}`).update({ newUser: false }).then(() => {
+            this.afs.doc(`users/${uid}`).update({ newUser: false }).then(() => {
               this.router.navigateByUrl('modificar', { replaceUrl: true })
             }).catch(async (err) => {
               console.log(err.code)

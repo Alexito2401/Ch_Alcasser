@@ -1,0 +1,160 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/modificar">
+        <ion-icon name="settings-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mi Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="display: flex; flex-direction: column">
+  <div class="c-blur c-width" style="flex: 1; width: 100%;">
+    <ion-row
+      style="border-bottom: 1px solid #000; box-shadow: 0 0 15px #000"
+      class="ion-padding c-blur"
+    >
+      <ion-col
+        size="3"
+        offsetXl="1"
+        style="display: flex"
+        class="ion-align-items-center"
+        size="4"
+      >
+        <ion-img class="c-image" [src]="imgProfile"> </ion-img>
+      </ion-col>
+      <ion-col>
+        <h2><b>Alex Bernal</b></h2>
+        <h4>Portero</h4>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="c-blur">
+      <ion-col
+        class="ion-text-center"
+        style="border-right: 1px solid #000; box-shadow: 0 0 15px #000"
+        size="6"
+      >
+        <h2><b>{{cantPartidos}}</b></h2>
+        <p>Partidos Jugados</p>
+      </ion-col>
+      <ion-col
+        class="ion-text-center"
+        style="border-left: 1px solid #000; box-shadow: 0 0 15px #000"
+        size="6"
+      >
+        <h2><b>{{user?.categoria | titlecase}}</b></h2>
+        <p>Equipo Principal</p>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div
+    style="
+      flex: 1;
+      width: 100%;
+      height: 60%;
+      background-color: #fff;
+      border-top: 1px solid #000;
+      box-shadow: 0 0 15px #000;
+    "
+    class="c-width"
+  >
+    <ion-grid>
+      <ion-row>
+        <h2><b>Tus Stats: </b></h2>
+      </ion-row>
+      <ion-row>
+        <ion-col class="c-stats" size="9">
+          <p class="l-center-button">
+            <b>Goles :</b> {{currentStats?.goles || 0}}
+            <b *ngIf="currentStats.goles != updateStats.goles"
+              >🡪 {{updateStats.goles}}
+            </b>
+          </p>
+        </ion-col>
+        <ion-col>
+          <ion-button
+            size="small"
+            (click)="createPopover($event, 'goles')"
+            fill="clear"
+          >
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="user?.posicion == posicion.portero">
+        <ion-col class="c-stats" size="9">
+          <p class="l-center-button">
+            <b>Paradas:</b> {{currentStats?.paradas || 0}}
+            <b *ngIf="currentStats.paradas != updateStats.paradas"
+              >🡪 {{updateStats.paradas}}
+            </b>
+          </p>
+        </ion-col>
+        <ion-col>
+          <ion-button
+            size="small"
+            (click)="createPopover($event, 'paradas')"
+            fill="clear"
+          >
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="c-stats" size="9">
+          <p class="l-center-button">
+            <b>Tiempo jugado:</b> {{currentStats?.tiempoJuego || 0}}
+            <b *ngIf="currentStats.tiempoJuego != updateStats.tiempoJuego"
+              >🡪 {{updateStats.tiempoJuego}}
+            </b>
+          </p>
+        </ion-col>
+        <ion-col>
+          <ion-button
+            size="small"
+            (click)="createPopover($event, 'Tiempo de juego')"
+            fill="clear"
+          >
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="c-stats" size="9">
+          <p class="l-center-button">
+            <b>Penaltis:</b> {{currentStats?.penaltis || 0}}
+            <b *ngIf="currentStats.penaltis != updateStats.penaltis"
+              >🡪 {{updateStats.penaltis}}
+            </b>
+          </p>
+        </ion-col>
+        <ion-col>
+          <ion-button
+            size="small"
+            (click)="createPopover($event, 'penaltis')"
+            fill="clear"
+          >
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-row class="ion-justify-content-center">
+      <ion-button
+        mode="md"
+        class="ion-margin c-background"
+        *ngIf="!sameStats(currentStats, updateStats)"
+        (click)="updateStatsFirebase()"
+      >
+        Guardar Stats
+      </ion-button>
+    </ion-row>
+  </div>
+</ion-content>

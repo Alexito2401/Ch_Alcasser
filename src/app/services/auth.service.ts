@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
 import { Jugador } from '../interfaces/usuario';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private toastController: ToastController,
+    private userService: UserService,
     private router: Router) { }
 
   // GoogleAuth() {
@@ -39,7 +41,12 @@ export class AuthService {
   // }
 
   async singIn({ email, password }) {
-    return this.afAuth.signInWithEmailAndPassword(email, password)
+    return this.afAuth.setPersistence('local').then(() => {
+      return this.afAuth.signInWithEmailAndPassword(email, password).then(userCredential => {
+        this.userService.setUser(userCredential.user)
+        localStorage.setItem('uid', userCredential.user.uid)
+      })
+    })
   }
 
 
@@ -78,9 +85,14 @@ export class AuthService {
       edad: null,
       posicion: null,
       equipo: [],
-      partidos: [],
       newUser: true,
-      categoria : null
+      categoria: null,
+      userStats: {
+        goles: 0,
+        paradas: 0,
+        penaltis: 0,
+        tiempoJuego: 0
+      }
     }
 
     return this.afs.doc(
@@ -165,7 +177,7 @@ export class AuthService {
           buttons: ['OK'],
         });
         break;
-        case 'permission-denied' :
+      case 'permission-denied':
         alert = await alertController.create({
           header: 'Permiso denegado',
           message: "No dispones de los suficientes permisos",

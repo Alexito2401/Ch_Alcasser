@@ -8,6 +8,8 @@ import { debounceTime, map } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { doc, getDoc } from "firebase/firestore";
 import { PartidosService } from '../../../services/partidos.service';
+import { onAuthStateChanged } from 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 interface select {
   id: number,
@@ -55,42 +57,61 @@ export class PartidosPage implements OnInit {
   @ViewChild('filtrado') filtrado: ElementRef;
 
 
-  constructor(private userService: UserService, private afs: AngularFirestore, public modalController: ModalController, private partidoService: PartidosService) {
+  constructor(private userService: UserService, private afs: AngularFirestore, public modalController: ModalController, private afsAuth: AngularFireAuth) {
 
   }
 
-  async ngOnInit() {
-    try {
-      const docRef = doc(this.db, "users", firebase.default.auth().currentUser?.uid);
-      const docSnap = await getDoc(docRef);
+  ngOnInit() {
 
-      if (docSnap.exists()) {
-        this.currentUser = docSnap.data() as Jugador;
-      }
-    } catch (error) {
+    this.afsAuth.onAuthStateChanged(async user => {
+      if (user) {
 
-    }
+        try {
+          const docRef = doc(this.db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
 
-    if (sessionStorage.getItem('partidos') && JSON.parse(sessionStorage.getItem('partidos')) != []) {
-      this.partidos = JSON.parse(sessionStorage.getItem('partidos'));
-      if (!this.currentUser) {
-        this.partidosFilter = of([...this.partidos])
+          if (docSnap.exists()) {
+            this.currentUser = docSnap.data() as Jugador;
+          }
+        } catch (error) {
+
+        }
+
+
+        if (sessionStorage.getItem('partidos') && JSON.parse(sessionStorage.getItem('partidos')) != []) {
+          this.partidos = JSON.parse(sessionStorage.getItem('partidos'));
+          if (!this.currentUser) {
+            this.partidosFilter = of([...this.partidos])
+          } else {
+            this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+          }
+
+        } else {
+          this.afs
+            .collection<Partido>("partidos")
+            .get()
+            .subscribe((ss) => {
+              ss.docs.forEach((doc) => {
+                this.partidos.push(doc.data());
+              });
+              sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
+              this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+            })
+        }
+
       } else {
-        this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+        this.afs
+          .collection<Partido>("partidos")
+          .get()
+          .subscribe((ss) => {
+            ss.docs.forEach((doc) => {
+              this.partidos.push(doc.data());
+            });
+            sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
+            this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+          })
       }
-
-    } else {
-      this.afs
-        .collection<Partido>("partidos")
-        .get()
-        .subscribe((ss) => {
-          ss.docs.forEach((doc) => {
-            this.partidos.push(doc.data());
-          });
-          sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
-          this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
-        })
-    }
+    })
   }
 
   search(query) {

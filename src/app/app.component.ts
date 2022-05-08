@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import * as firebase from 'firebase/compat/app';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Jugador } from '../../.history/src/app/interfaces/usuario_20220425010321';
-import { Observable, Observer, of, Subject } from 'rxjs';
+import { Jugador } from 'src/app/interfaces/usuario';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UserService } from './services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,6 +19,7 @@ export class AppComponent {
   linkEquipo: string = "";
 
   constructor(private afs: AngularFirestore) {
+
   }
 
   email: string = "";
@@ -41,9 +44,7 @@ export class AppComponent {
     });
     this.email = user?.email;
     this.nombre = user?.displayName;
-    this.urlImgUser = user.photoURL;
-
-
+    this.urlImgUser = user?.photoURL || '../assets/img/default-profile.png';
   });
 
 

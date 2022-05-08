@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import imageCompression from 'browser-image-compression';
 import { Jugador } from 'src/app/interfaces/usuario';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +17,40 @@ export class UserService {
   private basePath = '/profiles';
   fb;
   downloadURL: Observable<string>;
+  private previousUrl: string;
+  private currentUrl: string;
+  currentUser: firebase.default.User = null;
 
   constructor(private afAuth: AngularFireAuth,
-    private storage: AngularFireStorage, private afs: AngularFirestore) { }
+    private storage: AngularFireStorage, private afs: AngularFirestore, private router: Router) {
 
+    this.afAuth.authState.subscribe((user) => (this.currentUser = user))
 
-  get CurrentUser(): firebase.default.User {
-    return firebase.default.auth().currentUser;
+    this.currentUrl = this.router.url;
+    router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.previousUrl = this.currentUrl;
+        this.currentUrl = event.url;
+      };
+    });
   }
 
-  get CurrentUserPromise(): Promise<firebase.default.User> {
-    return this.afAuth.currentUser;
+  public getPreviousUrl() {
+    return this.previousUrl;
+  }
+
+  setUser(user: firebase.default.User) {
+    this.currentUser = user;
+    console.log(this.currentUser);
+
+  }
+
+  getUser() {
+    return this.currentUser;
   }
 
   public currentUserFireStore() {
-    return this.afs.collection('users').doc<Jugador>(this.CurrentUser.uid).get();
+    return this.afs.collection('users').doc<Jugador>(this.currentUser.uid).get();
   }
 
   public tareaCloudStorage(nombreArchivo: string, datos: any) {
@@ -64,7 +84,7 @@ export class UserService {
           if (url) {
             this.fb = url;
 
-            (await this.CurrentUser).updateProfile({
+            (await this.currentUser).updateProfile({
               photoURL: url
             })
           }

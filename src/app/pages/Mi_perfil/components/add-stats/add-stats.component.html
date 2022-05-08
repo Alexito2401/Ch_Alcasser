@@ -1,0 +1,14 @@
+<div style="display: flex; align-items: center; flex-wrap: wrap;" class="ion-padding">
+  <b>Añadir {{ campo }}: </b>
+  <ion-input
+    [(ngModel)]="value"
+    inputmode="numeric"
+    min="0"
+    value="0"
+  ></ion-input>
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center">
+  <ion-button (click)="closePopover('-')" size="small">Quitar</ion-button>
+  <ion-button (click)="closePopover('+')" size="small">Añadir</ion-button>
+</div>

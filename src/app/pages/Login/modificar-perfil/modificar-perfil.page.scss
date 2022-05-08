@@ -18,13 +18,8 @@ ion-item {
 
 .c-formulario {
   text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 10px;
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
-  padding: 10px;
 }
 
 @media (min-width: 576px) {

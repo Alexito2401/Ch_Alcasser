@@ -32,11 +32,15 @@ const routes: Routes = [
   },
   {
     path: 'partidos',
-    loadChildren: () => import('./pages/Partidos/partidos.module').then( m => m.PartidosModule)
+    loadChildren: () => import('./pages/Partidos/partidos.module').then(m => m.PartidosModule)
   },
   {
     path: 'equipo',
-    loadChildren: () => import('./pages/Mi_equipo/mi-equipo.module').then( m => m.MiEquipoModule)
+    loadChildren: () => import('./pages/Mi_equipo/mi-equipo.module').then(m => m.MiEquipoModule)
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/Mi_perfil/mi-perfil.module').then(m => m.MiPerfilModule)
   },
   {
     path: '**',

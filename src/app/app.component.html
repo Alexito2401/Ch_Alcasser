@@ -1,14 +1,14 @@
 <ion-app>
-  <ion-split-pane when="(min-width: 3000px)" contentId="main-content">
+  <ion-split-pane when="(min-width: 3000px)" style="height: 100%;" contentId="main-content">
     <ion-menu class="c-menu" contentId="main-content" type="overlay">
-      <ion-content>
+      <ion-content style="--background: var(--ion-background-color)">
         <ion-list id="inbox-list">
-          <ion-list-header class="ion-padding">
+          <ion-list-header style="margin-top: 10px;" class="ion-padding">
             <ion-text style="width: 50%"
               ><h4>{{ nombre }}</h4></ion-text
             >
             <ion-avatar style="margin-left: auto;">
-              <ion-img [src]="urlImgUser"></ion-img> </ion-avatar
+              <ion-img [src]="urlImgUser" routerLink="perfil/mi-perfil"></ion-img> </ion-avatar
           ></ion-list-header>
           <ion-note class="ion-padding">{{ email }}</ion-note>
 

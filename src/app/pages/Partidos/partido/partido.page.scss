@@ -117,7 +117,7 @@
 
   .c-neon {
     margin-top: auto;
-    animation: neonAnim 6s alternate-reverse infinite;
+    animation: neonAnim 6s alternate infinite;
     color: #0c0c0c;
     font-family: Cursive;
     font-size: 48px;
@@ -130,7 +130,7 @@
       0 0 113px rgba(12, 12, 12, 0.7);
   }
   to {
-    text-shadow: 0 0 18px rgba(12, 12, 12, 0.7), 0 0 33px rgba(12, 12, 12, 0.7),
+    text-shadow: 0 0 18px rgba(220, 19, 19, 0.7), 0 0 33px rgba(230, 230, 230, 0.7),
       0 0 73px rgba(12, 12, 12, 0.7);
   }
 }

@@ -3,7 +3,7 @@ import { switchMap } from 'rxjs/operators';
 import { Equipo } from 'src/app/interfaces/usuario';
 import { UserService } from "src/app/services/user.service";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { of, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { PartidosService } from 'src/app/services/partidos.service';
 

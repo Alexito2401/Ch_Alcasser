@@ -15,7 +15,7 @@ export interface Partido {
   fecha: string;
   categoria: Categoria;
   estado: Estado;
-  stats? : Stats;
+  stats?: Stats;
 }
 
 export interface Equipo {
@@ -29,17 +29,24 @@ export interface Equipo {
 export interface Jugador extends Usuario {
   posicion?: Posicion;
   equipo?: string[];
-  partidos?: Partido[];
   categoria?: Categoria;
+  userStats?: UserStats;
 }
 
-export interface Stats{
-  perdidas : number;
-  recuperadas : number;
+export interface Stats {
+  perdidas: number;
+  recuperadas: number;
   tiros: number;
-  paradas : number;
+  paradas: number;
   tarjetasA?: number;
   tarjetasR?: number;
+}
+
+export interface UserStats {
+  goles? : number;
+  paradas? : number;
+  tiempoJuego? : number;
+  penaltis? : number;
 }
 
 export enum Estado {
