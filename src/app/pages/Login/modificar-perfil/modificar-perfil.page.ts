@@ -62,7 +62,14 @@ export class ModificarPerfilPage implements OnInit {
     const user = this.userService.getUser();
     user.updatePassword(this.password.value);
     this.userService.onFileSelect(this.event, user.uid);
-    this.router.navigateByUrl('partidos/partidos', { replaceUrl: true })
+
+    if (this.userService.getPreviousUrl() != '/') {
+      this.router.navigateByUrl(this.userService.getPreviousUrl(), { replaceUrl: true })
+    } else {
+      this.router.navigateByUrl('partidos/partidos', { replaceUrl: true })
+    }
+
+
   }
 
 

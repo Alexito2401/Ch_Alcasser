@@ -4,6 +4,11 @@
     flex-wrap: wrap;
     flex-direction: column;
   }
+
+  .c-equipo-card {
+    width: 80%;
+    margin: auto; margin-top: 3%
+  }
 }
 
 @media (min-width: 768px) {
@@ -11,6 +16,11 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+  }
+
+  .c-equipo-card {
+    width: auto;
+    margin: auto; margin-top: 3%
   }
 }
 

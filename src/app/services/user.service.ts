@@ -86,12 +86,10 @@ export class UserService {
               photoURL: url
             })
           }
-          console.log(this.fb);
         })
       })
     ).subscribe(url => {
       if (url) {
-        console.log(url)
       }
     })
   }

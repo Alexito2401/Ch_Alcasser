@@ -12,7 +12,7 @@
     <h1><b>Selecciona el equipo:</b></h1>
   </div>
   <div class="c-container">
-    <div style="margin: auto; margin-top: 3%" *ngFor="let equipo of equipos">
+    <div class="c-equipo-card" *ngFor="let equipo of equipos">
       <equipo-card (click)="goToEquipo(equipo)" [equipo]="equipo"></equipo-card>
     </div>
   </div>
