@@ -31,14 +31,13 @@ export class AppComponent {
   firebase = firebase.default.auth().onAuthStateChanged(user => {
     this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
       data.data().equipo.length > 1 ? this.titleEquipo = 'Mis Equipos' : this.titleEquipo = 'Mi Equipo'
-      data.data().equipo.length > 1 ? this.linkEquipo = '/equipo/mis-equipos' : this.linkEquipo = '/equipo/mi-equipo'
+      data.data().equipo.length > 1 ? this.linkEquipo = '/equipo/mis-equipos' : this.linkEquipo = '/equipo/equipo'
 
       this.appPages = [
         { title: 'Partidos', url: '/partidos/partidos', icon: 'football-outline' },
         { title: this.titleEquipo, url: this.linkEquipo, icon: 'body' },
-        { title: 'Equipos', url: '/folder/Favorites', icon: 'people' },
+        { title: 'Equipos', url: '/equipo/equipos', icon: 'people' },
         { title: 'Patraocinadores', url: '/folder/Archived', icon: 'albums' },
-        { title: 'Gestionar Equipo', url: '/folder/Trash', icon: 'person-add' },
       ];
 
     });
@@ -46,7 +45,4 @@ export class AppComponent {
     this.nombre = user?.displayName;
     this.urlImgUser = user?.photoURL || '../assets/img/default-profile.png';
   });
-
-
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 }

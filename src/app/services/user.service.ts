@@ -41,8 +41,6 @@ export class UserService {
 
   setUser(user: firebase.default.User) {
     this.currentUser = user;
-    console.log(this.currentUser);
-
   }
 
   getUser() {

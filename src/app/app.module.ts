@@ -12,9 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
-import { SharedModule } from './shared/shared.module';
 import { PartidosModule } from './pages/Partidos/partidos.module';
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +20,7 @@ import { PartidosModule } from './pages/Partidos/partidos.module';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule, AngularFirestoreModule, AngularFireStorageModule,
-    SharedModule, PartidosModule],
+    PartidosModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenOrientation],
   bootstrap: [AppComponent],
 })

@@ -9,11 +9,6 @@ const redirectUnauthorizedToLogin = () =>
 const rediretLoggedInToChat = () => redirectLoggedInTo(['/']);
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'folder/Inbox',
-  //   pathMatch: 'full'
-  // },
   {
     path: '',
     loadChildren: () => import('./pages/Login/login/login.module').then(m => m.LoginPageModule)
@@ -36,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'equipo',
-    loadChildren: () => import('./pages/Mi_equipo/mi-equipo.module').then(m => m.MiEquipoModule)
+    loadChildren: () => import('./pages/Mi_equipo/mi-equipo.module').then(m => m.MiEquipoModule),
   },
   {
     path: 'perfil',
@@ -46,9 +41,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/'
   },
-
-
-
 ];
 
 @NgModule({

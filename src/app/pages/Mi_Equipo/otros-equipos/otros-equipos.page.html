@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Equipos de CH Alcasser</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="c-blur ion-padding">
+    <h1><b>Selecciona el equipo:</b></h1>
+  </div>
+  <div class="c-container">
+    <div style="margin: auto; margin-top: 3%" *ngFor="let equipo of equipos">
+      <equipo-card (click)="goToEquipo(equipo)" [equipo]="equipo"></equipo-card>
+    </div>
+  </div>
+</ion-content>

@@ -15,6 +15,8 @@ export class EquipoCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.equipo);
+
     this.cantJugadores = this.equipo?.jugadores?.length || 0;
     this.cantPartidos = this.equipo?.jugadores?.length || 0;
   }

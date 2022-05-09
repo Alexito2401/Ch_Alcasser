@@ -1,21 +1,33 @@
 <div class="c-background c-card">
   <ion-row>
-  <ion-col style="padding: 0" size="4">
-    <ion-img
-      class="c-image ion-padding-1"
-      src="../../../../../assets/img/escut.png"
-    ></ion-img>
-  </ion-col>
-  <ion-col style="padding: 0" size="8"><h1 class="ion-padding-1"><b>{{equipo.uid | titlecase }}</b></h1></ion-col>
+    <ion-col style="padding: 0" size="4">
+      <ion-img
+        class="c-image ion-padding-1"
+        src="../../../../../assets/img/escut.png"
+      ></ion-img>
+    </ion-col>
+    <ion-col style="padding: 0" size="8"
+      ><h1 class="ion-padding-1">
+        <b>{{ equipo?.uid | titlecase }}</b>
+      </h1></ion-col
+    >
   </ion-row>
 
   <ion-row>
-    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"><h3 class="c-text"><b>Jugadores : </b> {{cantJugadores}}</h3></ion-col>
+    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"
+      ><h3 class="c-text"><b>Jugadores : </b> {{ cantJugadores }}</h3></ion-col
+    >
   </ion-row>
   <ion-row>
-    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"><h3 class="c-text"><b>Partidos : </b> {{cantPartidos}}</h3></ion-col>
+    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"
+      ><h3 class="c-text"><b>Partidos : </b> {{ cantPartidos }}</h3></ion-col
+    >
   </ion-row>
   <ion-row>
-    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"><h3 class="c-text"><b>Entrenador : </b> {{equipo.Entrenador}}</h3></ion-col>
+    <ion-col class="ion-padding l-padding-l-1 ion-padding" size="12"
+      ><h3 class="c-text">
+        <b>Entrenador : </b> {{ equipo?.Entrenador }}
+      </h3></ion-col
+    >
   </ion-row>
 </div>
