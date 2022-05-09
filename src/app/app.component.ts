@@ -5,6 +5,7 @@ import { Jugador } from 'src/app/interfaces/usuario';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserService } from './services/user.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -18,15 +19,16 @@ export class AppComponent {
   titleEquipo: string = "";
   linkEquipo: string = "";
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private userService: UserService) {
 
   }
 
   email: string = "";
   nombre: string = "";
-  urlImgUser: string = "";
+  urlImgUser = this.userService.currentImg
 
   public appPages = [];
+
 
   firebase = firebase.default.auth().onAuthStateChanged(user => {
     this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
@@ -41,8 +43,8 @@ export class AppComponent {
       ];
 
     });
+
     this.email = user?.email;
     this.nombre = user?.displayName;
-    this.urlImgUser = user?.photoURL || '../assets/img/default-profile.png';
   });
 }

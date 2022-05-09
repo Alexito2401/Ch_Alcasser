@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content style="display: flex; flex-direction: column">
-  <div class="c-blur c-width" style="flex: 1; width: 100%;">
+  <div class="c-blur c-width" style="flex: 1; width: 100%">
     <ion-row
       style="border-bottom: 1px solid #000; box-shadow: 0 0 15px #000"
       class="ion-padding c-blur"
@@ -25,7 +25,7 @@
         class="ion-align-items-center"
         size="4"
       >
-        <ion-img class="c-image" [src]="imgProfile"> </ion-img>
+        <ion-img class="c-image" [src]="imgProfile | async"> </ion-img>
       </ion-col>
       <ion-col>
         <h2><b>Alex Bernal</b></h2>

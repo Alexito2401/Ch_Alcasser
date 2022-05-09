@@ -4,22 +4,24 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import * as firebase from 'firebase/compat/app';
 import { finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import imageCompression from 'browser-image-compression';
 import { Jugador } from 'src/app/interfaces/usuario';
 import { NavigationEnd, Router } from '@angular/router';
+import { values } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private basePath = '/profiles';
   fb;
-  downloadURL: Observable<string>;
+  private basePath = '/profiles';
+  private downloadURL: Observable<string>;
   private previousUrl: string;
   private currentUrl: string;
-  currentUser: firebase.default.User = null;
+  private currentUser: firebase.default.User = null;
+  public currentImg: BehaviorSubject<string> = new BehaviorSubject('../../assets/img/default-profile.png');
 
   constructor(private afAuth: AngularFireAuth,
     private storage: AngularFireStorage, private afs: AngularFirestore, private router: Router) {
@@ -33,10 +35,16 @@ export class UserService {
         this.currentUrl = event.url;
       };
     });
+
+    firebase.default.auth().onAuthStateChanged(user => this.currentImg.next(user.photoURL || '../../assets/img/default-profile.png'))
   }
 
   public getPreviousUrl() {
     return this.previousUrl;
+  }
+
+  setImage(url: string) {
+    this.currentImg.next(url);
   }
 
   setUser(user: firebase.default.User) {
@@ -84,7 +92,7 @@ export class UserService {
 
             (await this.currentUser).updateProfile({
               photoURL: url
-            })
+            }).then(() => this.currentImg.next(url))
           }
         })
       })

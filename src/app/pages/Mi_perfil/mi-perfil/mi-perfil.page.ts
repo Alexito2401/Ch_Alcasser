@@ -20,7 +20,7 @@ export class MiPerfilPage implements OnInit {
   @ViewChild('content') elementView: ElementRef;
 
   user: Jugador = null;
-  imgProfile: string = '../../../../assets/img/default-profile.png';
+  imgProfile = this.userService.currentImg;
   cantPartidos: number = 0;
   currentStats: UserStats = {};
   updateStats: UserStats = {};
@@ -33,7 +33,7 @@ export class MiPerfilPage implements OnInit {
 
     this.afsAuth.onAuthStateChanged(async user => {
       if (user) {
-        this.imgProfile = user.photoURL
+        this.imgProfile = this.userService.currentImg;
       }
     })
 
