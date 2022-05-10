@@ -9,7 +9,7 @@
 
 <ion-content>
   <div class="c-container">
-    <ion-card class="c-card" *ngFor="let patrocinador of patrocinadoresList">
+    <ion-card style="max-width: 400px;" class="c-card" *ngFor="let patrocinador of patrocinadoresList">
       <ion-img (click)="goTo(patrocinador.linkTo)" style="width: 100%;" [src]="patrocinador.foto"></ion-img>
       <ion-card-header>
         <ion-card-title>{{patrocinador.nombre}}</ion-card-title>
