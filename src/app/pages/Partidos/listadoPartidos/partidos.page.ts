@@ -83,7 +83,7 @@ export class PartidosPage implements OnInit {
           if (!this.currentUser) {
             this.partidosFilter = of([...this.partidos])
           } else {
-            this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+            this.partidosFilter = of(this.partidos.filter(partido => this.currentUser.equipo.includes(partido.categoria)))
           }
 
         } else {
@@ -95,7 +95,7 @@ export class PartidosPage implements OnInit {
                 this.partidos.push(doc.data());
               });
               sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
-              this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+              this.partidosFilter = of(this.partidos.filter(partido => this.currentUser.equipo.includes(partido.categoria)))
             })
         }
 
@@ -108,20 +108,22 @@ export class PartidosPage implements OnInit {
               this.partidos.push(doc.data());
             });
             sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
-            this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+            this.partidosFilter = of(this.partidos.filter(partido => this.currentUser.equipo.includes(partido.categoria)))
           })
       }
     })
   }
 
   search(query) {
+    console.log(query.target.value);
+
     query = this.reemplazarAcentos(query.target.value.toLowerCase())
 
     if (!query) {
       this.filtrarPor(this.title.id);
     } else {
-      this.partidosFilter = this.partidosFilter.pipe(
-        map(data => data.filter((partido) => this.reemplazarAcentos(partido.equipoL.toLowerCase()).includes(query) || this.reemplazarAcentos(partido.equipoV.toLowerCase()).includes(query))),
+      this.partidosFilter = of(this.partidos).pipe(
+        map(data => data.filter((partido) => this.reemplazarAcentos(partido.equipoL.toLowerCase()).includes(query) || this.reemplazarAcentos(partido.equipoV.toLowerCase()).includes(query) || this.reemplazarAcentos(partido.categoria.toLowerCase()).includes(query))),
         debounceTime(300)
       )
     }
@@ -163,7 +165,7 @@ export class PartidosPage implements OnInit {
 
     switch (id) {
       case 1:
-        this.partidosFilter = of(this.partidos.filter(partido => partido.categoria == this.currentUser.categoria))
+        this.partidosFilter = of(this.partidos.filter(partido => this.currentUser.equipo.includes(partido.categoria)))
         break;
       case 2:
         this.partidosFilter = of([...this.partidos]);
