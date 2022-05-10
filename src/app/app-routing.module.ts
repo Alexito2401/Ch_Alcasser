@@ -39,12 +39,17 @@ const routes: Routes = [
   },
   {
     path: 'patrocinadores',
-    loadChildren: () => import('./pages/Patrocinadores/patrocinadores/patrocinadores.module').then( m => m.PatrocinadoresPageModule)
+    loadChildren: () => import('./pages/Patrocinadores/patrocinadores/patrocinadores.module').then(m => m.PatrocinadoresPageModule)
+  },
+  {
+    path: 'contrasenya-olvidada',
+    loadChildren: () => import('./pages/Login/contrasena-olvidada/contrasena-olvidada.module').then(m => m.ContrasenaOlvidadaPageModule)
   },
   {
     path: '**',
     redirectTo: '/'
   },
+
 
 ];
 
