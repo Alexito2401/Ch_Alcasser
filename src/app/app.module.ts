@@ -13,6 +13,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { PartidosModule } from './pages/Partidos/partidos.module';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { AppAvailability } from '@ionic-native/app-availability/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +23,7 @@ import { PartidosModule } from './pages/Partidos/partidos.module';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule, AngularFirestoreModule, AngularFireStorageModule,
     PartidosModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenOrientation],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenOrientation, InAppBrowser, AppAvailability],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

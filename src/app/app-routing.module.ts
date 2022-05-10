@@ -38,9 +38,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/Mi_perfil/mi-perfil.module').then(m => m.MiPerfilModule)
   },
   {
+    path: 'patrocinadores',
+    loadChildren: () => import('./pages/Patrocinadores/patrocinadores/patrocinadores.module').then( m => m.PatrocinadoresPageModule)
+  },
+  {
     path: '**',
     redirectTo: '/'
   },
+
 ];
 
 @NgModule({

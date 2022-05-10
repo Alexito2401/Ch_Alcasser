@@ -1,3 +1,13 @@
-ion-split-pane{
-  --side-width: 300px
+ion-split-pane {
+  --side-width: 300px;
+}
+
+.c-button {
+  --border-radius: 50%;
+  width: 56px;
+  height: 56px;
+
+  position: absolute;
+  bottom: 0;
+  left: 10px;
 }

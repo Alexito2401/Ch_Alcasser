@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Patrocinadores del CH Alcasser</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="c-container">
+    <ion-card class="c-card" *ngFor="let patrocinador of patrocinadoresList">
+      <ion-img (click)="goTo(patrocinador.linkTo)" style="width: 100%;" [src]="patrocinador.foto"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{patrocinador.nombre}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-padding"> {{patrocinador.descripcion}} </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
