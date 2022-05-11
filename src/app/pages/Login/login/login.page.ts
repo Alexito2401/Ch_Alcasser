@@ -39,6 +39,10 @@ export class LoginPage implements OnInit {
     })
   }
 
+  ngOnDestroy(): void {
+    sessionStorage.removeItem('partidos');
+  }
+
   get email() {
     return this.credentialForm.get('email')
   }

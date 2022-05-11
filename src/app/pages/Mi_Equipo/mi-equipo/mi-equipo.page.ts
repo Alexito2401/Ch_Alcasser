@@ -1,9 +1,9 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { doc, getDoc } from "firebase/firestore";
 import { Jugador, Equipo } from '../../../interfaces/usuario';
 import { UserService } from '../../../services/user.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, finalize, catchError } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { Posicion } from 'src/app/interfaces/usuario';
 import { PartidosService } from 'src/app/services/partidos.service';
@@ -28,76 +28,45 @@ interface JugadorFoto {
 export class MiEquipoPage implements OnInit {
 
   uidEquipo: string = null;
-  equipo: Equipo = null;
+
   currentUser: Jugador = null;
   jugadores: Jugador[] = [];
   jugadoresOrdenados: JugadorOrdenados[] = [];
   db = firebase.default.firestore();
+  equipo: Equipo = null;
 
   constructor(private userService: UserService, private afs: AngularFirestore, private partidoService: PartidosService, private afsAuth: AngularFireAuth) {
 
   }
 
+
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    this.processData();
+  }
+
+  // execute this function before browser refresh
+
+
   ngOnInit() {
-
-    if (this.partidoService.getEquipo()) {
-      this.equipo = this.partidoService.getEquipo();
-      this.cargarEquipo();
-    } else {
-      this.afsAuth.onAuthStateChanged(async user => {
-        if (user) {
-
-          try {
-            const docRef = doc(this.db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-              this.currentUser = docSnap.data() as Jugador;
-
-              const docRefEquipo = doc(this.db, "equipos", this.currentUser.equipo[0]);
-              const docSnapEquipo = await getDoc(docRefEquipo);
-
-              if (docSnapEquipo.exists()) {
-                this.equipo = docSnapEquipo.data() as Equipo;
-                console.log(this.equipo);
-
-                this.cargarEquipo();
-              }
-            }
-          } catch (error) {
-
-          }
-        }
-      })
-    }
-
-
-
-
+    this.uidEquipo = this.partidoService.getUltimoEquipo();
+    this.cargarEquipo();
   }
 
   cargarEquipo() {
-    this.uidEquipo = this.equipo.uid;
-    if (sessionStorage.getItem(this.equipo.uid)) {
+
+    if (sessionStorage.getItem(this.equipo?.uid)) {
       this.jugadoresOrdenados = JSON.parse(sessionStorage.getItem(this.equipo.uid))
       this.jugadoresOrdenados = this.shuffle(this.jugadoresOrdenados)
       console.log(this.jugadoresOrdenados)
     } else {
-      const user = this.userService.getUser();
-
-      this.afs.collection('users').doc<Jugador>(user.uid).get().pipe(
-        switchMap(user => {
-          if (this.uidEquipo == null) {
-            return this.afs.collection('equipos').doc<Equipo>(user.data().equipo[0]).get()
-          } else {
-            return this.afs.collection('equipos').doc<Equipo>(this.uidEquipo).get()
-          }
-        }), tap(data => this.equipo = data.data()),
+      return this.afs.collection('equipos').doc<Equipo>(this.uidEquipo).get().pipe(
+        tap(data => this.equipo = data.data()),
         switchMap(data => {
-          const observable = this.equipo.jugadores.map(jugador => this.afs.collection('users').doc<Jugador>(jugador).get())
+          this.partidoService.setEquipo(data.data())
+          const observable = this.equipo?.jugadores.map(jugador => this.afs.collection('users').doc<Jugador>(jugador).get())
           return forkJoin(observable)
-        })
-
+        }),
+        catchError(() => { return [] })
       ).subscribe({
         next: data => {
           data.forEach(jugador => this.jugadores.push(jugador.data()))
@@ -121,6 +90,7 @@ export class MiEquipoPage implements OnInit {
         },
       });
     }
+
   }
 
   shuffle(array: Array<JugadorOrdenados>) {
@@ -137,13 +107,15 @@ export class MiEquipoPage implements OnInit {
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
-
     return array;
   }
 
+  processData() {
+    sessionStorage.setItem('currentValueUID', this.equipo.uid)
+    sessionStorage.setItem(this.equipo.uid, JSON.stringify(this.jugadoresOrdenados))
+  }
+
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     sessionStorage.setItem(this.equipo.uid, JSON.stringify(this.jugadoresOrdenados))
   }
 }

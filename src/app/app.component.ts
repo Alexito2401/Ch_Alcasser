@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import * as firebase from 'firebase/compat/app';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Jugador } from 'src/app/interfaces/usuario';
+import { Equipo, Jugador } from 'src/app/interfaces/usuario';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserService } from './services/user.service';
@@ -9,6 +9,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AppAvailability } from '@ionic-native/app-availability/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { PartidosService } from './services/partidos.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -25,7 +26,8 @@ export class AppComponent {
   constructor(private afs: AngularFirestore, private userService: UserService, private afsAuth: AngularFireAuth, private platform: Platform,
     private inAppBrowser: InAppBrowser,
     private appAvailability: AppAvailability,
-    private router: Router) {
+    private router: Router,
+    private partidoService: PartidosService) {
 
   }
 
@@ -41,6 +43,10 @@ export class AppComponent {
       this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
         data.data().equipo.length > 1 ? this.titleEquipo = 'Mis Equipos' : this.titleEquipo = 'Mi Equipo'
         data.data().equipo.length > 1 ? this.linkEquipo = '/equipo/mis-equipos' : this.linkEquipo = '/equipo/equipo'
+
+        if (data.data().equipo.length == 1) {
+          this.partidoService.setUltimoEquipo(data.data().equipo[0])
+        }
 
         this.appPages = [
           { title: 'Partidos', url: '/partidos/partidos', icon: 'football-outline' },
@@ -62,6 +68,7 @@ export class AppComponent {
       sessionStorage.clear()
 
     })
+    sessionStorage.clear()
   }
 
   socialMedia(type) {

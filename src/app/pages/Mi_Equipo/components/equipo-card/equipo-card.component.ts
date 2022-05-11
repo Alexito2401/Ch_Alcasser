@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Equipo } from 'src/app/interfaces/usuario';
+import { Equipo, Partido } from 'src/app/interfaces/usuario';
 
 @Component({
   selector: 'equipo-card',
@@ -15,9 +15,10 @@ export class EquipoCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.equipo);
+
+    const partidos: Partido[] = JSON.parse(sessionStorage.getItem('partidos'))
+    this.cantPartidos = partidos.filter(partido => partido.categoria == this.equipo.uid).length || 0
 
     this.cantJugadores = this.equipo?.jugadores?.length || 0;
-    this.cantPartidos = this.equipo?.partidos?.length || 0;
   }
 }

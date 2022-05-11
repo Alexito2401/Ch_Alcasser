@@ -107,7 +107,7 @@ export class PartidosPage implements OnInit {
             ss.docs.forEach((doc) => {
               this.partidos.push(doc.data());
             });
-            sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
+            //sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
             this.partidosFilter = of(this.partidos.filter(partido => this.currentUser.equipo.includes(partido.categoria)))
           })
       }

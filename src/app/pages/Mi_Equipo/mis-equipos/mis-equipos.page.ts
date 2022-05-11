@@ -32,7 +32,7 @@ export class MisEquiposPage implements OnInit {
   goToEquipo(equipo: Equipo) {
     this.partidoService.setEquipo(equipo);
 
-    this.router.navigateByUrl('/equipo/mi-equipo', { replaceUrl: true })
+    this.router.navigate(['equipo/equipo', { id: equipo.uid }])
   }
 
 }

@@ -52,14 +52,10 @@ export class OtrosEquiposPage implements OnInit {
     })
   }
 
-
-
-
-
   goToEquipo(equipo: Equipo) {
     this.partidoService.setEquipo(equipo);
 
-    this.router.navigateByUrl('/equipo/equipo', { replaceUrl: true })
+    this.router.navigate(['equipo/equipo', { id: equipo.uid }])
   }
 
 }
