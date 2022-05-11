@@ -40,7 +40,11 @@ export class UserService {
       };
     });
 
-    firebase.default.auth().onAuthStateChanged(user => this.currentImg.next(user.photoURL || '../../assets/img/default-profile.png'))
+    firebase.default.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.currentImg.next(user.photoURL || '../../assets/img/default-profile.png')
+      }
+    })
   }
 
   public getPreviousUrl() {

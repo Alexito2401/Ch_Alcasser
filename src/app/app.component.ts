@@ -8,6 +8,7 @@ import { UserService } from './services/user.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AppAvailability } from '@ionic-native/app-availability/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -23,7 +24,8 @@ export class AppComponent {
 
   constructor(private afs: AngularFirestore, private userService: UserService, private afsAuth: AngularFireAuth, private platform: Platform,
     private inAppBrowser: InAppBrowser,
-    private appAvailability: AppAvailability) {
+    private appAvailability: AppAvailability,
+    private router: Router) {
 
   }
 
@@ -35,25 +37,31 @@ export class AppComponent {
 
 
   firebase = firebase.default.auth().onAuthStateChanged(user => {
-    this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
-      data.data().equipo.length > 1 ? this.titleEquipo = 'Mis Equipos' : this.titleEquipo = 'Mi Equipo'
-      data.data().equipo.length > 1 ? this.linkEquipo = '/equipo/mis-equipos' : this.linkEquipo = '/equipo/equipo'
+    if (user) {
+      this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
+        data.data().equipo.length > 1 ? this.titleEquipo = 'Mis Equipos' : this.titleEquipo = 'Mi Equipo'
+        data.data().equipo.length > 1 ? this.linkEquipo = '/equipo/mis-equipos' : this.linkEquipo = '/equipo/equipo'
 
-      this.appPages = [
-        { title: 'Partidos', url: '/partidos/partidos', icon: 'football-outline' },
-        { title: this.titleEquipo, url: this.linkEquipo, icon: 'body' },
-        { title: 'Equipos', url: '/equipo/equipos', icon: 'people' },
-        { title: 'Patraocinadores', url: 'patrocinadores', icon: 'albums' },
-      ];
+        this.appPages = [
+          { title: 'Partidos', url: '/partidos/partidos', icon: 'football-outline' },
+          { title: this.titleEquipo, url: this.linkEquipo, icon: 'body' },
+          { title: 'Equipos', url: '/equipo/equipos', icon: 'people' },
+          { title: 'Patraocinadores', url: 'patrocinadores', icon: 'albums' },
+        ];
 
-    });
+      });
 
-    this.email = user?.email;
-    this.nombre = user?.displayName;
+      this.email = user?.email;
+      this.nombre = user?.displayName;
+    }
   });
 
   async logout() {
-    await this.afsAuth.signOut().then(() => sessionStorage.clear())
+    await this.afsAuth.signOut().then(() => {
+      this.router.navigateByUrl('/', { replaceUrl: true })
+      sessionStorage.clear()
+
+    })
   }
 
   socialMedia(type) {
