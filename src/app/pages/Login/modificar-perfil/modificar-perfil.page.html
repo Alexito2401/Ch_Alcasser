@@ -57,10 +57,12 @@
             *ngIf="(password.dirty || password.touched) && password.errors"
             class="errors"
           >
-            <span style="color: red;" *ngIf="password.errors?.required"
+            <span style="color: red" *ngIf="password.errors?.required"
               >Contraseña es obligatoria</span
             >
-            <span style="color: red;" *ngIf="password.value.length < 6 && !password.errors?.required"
+            <span
+              style="color: red"
+              *ngIf="password.value.length < 6 && !password.errors?.required"
               >Longuitud minima de 6 caracteres</span
             >
           </div>
@@ -88,17 +90,35 @@
             *ngIf="(confirmPassword.dirty || confirmPassword.touched) && confirmPassword.errors"
             class="errors"
           >
-            <span style="color: red;" *ngIf="confirmPassword.errors?.required"
+            <span style="color: red" *ngIf="confirmPassword.errors?.required"
               >Contraseña es obligatoria</span
             >
-            <span style="color: red;"  *ngIf="confirmPassword.errors?.password"
+            <span style="color: red" *ngIf="confirmPassword.errors?.password"
               >Longuitud minima de 6 caracteres</span
             >
           </div>
         </ion-col>
       </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Posicion</ion-label>
+            <ion-select formControlName="posicion" value="posicion">
+              <ion-select-option
+                *ngFor="let posicion of posiciones | keyvalue"
+                [value]="posicion.key"
+              >
+                {{posicion.value |titlecase}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
-    <ion-button [disabled]="!uploadForm.valid" (click)="guardarInfoFirebase()">Modificar</ion-button>
+    <ion-button [disabled]="!uploadForm.valid" (click)="guardarInfoFirebase()"
+      >Modificar</ion-button
+    >
   </form>
 </ion-content>

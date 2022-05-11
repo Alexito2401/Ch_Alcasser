@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../services/user.service';
 import { ValidatorsService } from '../../../services/validators.service';
+import { Posicion } from '../../../interfaces/usuario';
 
 @Component({
   selector: 'app-modificar-perfil',
@@ -19,6 +20,8 @@ export class ModificarPerfilPage implements OnInit {
   uploadForm: FormGroup;
   categorias = environment.categorias;
   event: Event;
+  posiciones: typeof Posicion = Posicion;
+  goTo: string;
 
 
   constructor(public fb: FormBuilder,
@@ -27,13 +30,7 @@ export class ModificarPerfilPage implements OnInit {
     private router: Router
   ) {
     // Reactive Form
-    this.uploadForm = this.fb.group({
-      avatar: [null],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-    }, {
-      validators: [this.vs.camposIguales('password', 'confirmPassword')]
-    })
+
   }
 
   ngOnInit() {
@@ -42,12 +39,28 @@ export class ModificarPerfilPage implements OnInit {
         avatar: [null],
         password: ['', [Validators.minLength(6)]],
         confirmPassword: ['', [Validators.minLength(6)]],
+        posicion: [null]
       }, {
         validators: [this.vs.camposIguales('password', 'confirmPassword')]
       })
+
+      this.goTo = this.userService.getPreviousUrl();
+    } else {
+      this.uploadForm = this.fb.group({
+        avatar: [null],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+        posicion: [null]
+      }, {
+        validators: [this.vs.camposIguales('password', 'confirmPassword')]
+      })
+
+      this.goTo = 'partidos/partidos';
     }
 
-    this.imageURL = firebase.default.auth().currentUser.photoURL ?? ''
+    firebase.default.auth().onAuthStateChanged(user => {
+      this.imageURL = user.photoURL
+    })
   }
 
   get password() {
@@ -56,20 +69,19 @@ export class ModificarPerfilPage implements OnInit {
   get confirmPassword() {
     return this.uploadForm.get('confirmPassword')
   }
+  get updatePosicion() {
+    return this.uploadForm.get('posicion')
+  }
 
   guardarInfoFirebase() {
+    console.log(this.updatePosicion);
 
     const user = this.userService.getUser();
     user.updatePassword(this.password.value);
     this.userService.onFileSelect(this.event, user.uid);
+    this.userService.cambiarPosicionJugador(this.updatePosicion.value)
 
-    if (this.userService.getPreviousUrl() != '/') {
-      this.router.navigateByUrl(this.userService.getPreviousUrl(), { replaceUrl: true })
-    } else {
-      this.router.navigateByUrl('partidos/partidos', { replaceUrl: true })
-    }
-
-
+    this.router.navigateByUrl(this.goTo, { replaceUrl: true })
   }
 
 

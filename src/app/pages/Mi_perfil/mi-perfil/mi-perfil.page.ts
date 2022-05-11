@@ -9,6 +9,7 @@ import * as firebase from 'firebase/compat/app';
 import { AddStatsComponent } from '../components/add-stats/add-stats.component';
 import * as _ from 'lodash';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -19,54 +20,55 @@ export class MiPerfilPage implements OnInit {
 
   @ViewChild('content') elementView: ElementRef;
 
-  user: Jugador = null;
   imgProfile = this.userService.currentImg;
   cantPartidos: number = 0;
   currentStats: UserStats = {};
   updateStats: UserStats = {};
   posicion = Posicion;
+  currentUser: Jugador;
 
   constructor(private menuController: MenuController, private userService: UserService, private afs: AngularFirestore, private popoverController: PopoverController, private toastController: ToastController, private afsAuth: AngularFireAuth) {
   }
+  currentPosicion = this.userService.currentPosicion;
 
   ngOnInit() {
 
     this.afsAuth.onAuthStateChanged(async user => {
       if (user) {
         this.imgProfile = this.userService.currentImg;
+
+        this.afs.collection('users').doc<Jugador>(user.uid).get().subscribe(data => {
+          this.currentUser = data.data()
+          this.currentPosicion.next(this.currentUser.posicion)
+        })
+
+
       }
     })
 
 
     this.menuController.close();
 
-    if (sessionStorage.getItem('cantPartidos') && sessionStorage.getItem('user')) {
-      this.cantPartidos = +sessionStorage.getItem('cantPartidos')
-      this.user = JSON.parse(sessionStorage.getItem('user'));
-      this.currentStats = { ...this.user.userStats }, this.updateStats = { ...this.user.userStats };
-      console.log(this.currentStats);
 
-    } else {
-      this.userService.currentUserFireStore().pipe(
-        tap(data => {
-          this.user = data.data()
-          sessionStorage.setItem('user', JSON.stringify(data.data()))
-          this.currentStats = { ...this.user.userStats }, this.updateStats = { ...this.user.userStats };
-        }),
-        switchMap(data => this.afs.collection<Partido>('partidos').get()),
-        map(data => {
-          const equipos = this.user.equipo;
-          let partidos: Partido[] = [];
-          data.docs.forEach(e => {
-            for (let equipo of equipos) {
-              e.data().categoria.includes(equipo) ? partidos.push(e.data()) : '';
-            }
-          })
-          sessionStorage.setItem('cantPartidos', partidos.length.toString())
-          return partidos.length
-        }),
-      ).subscribe(data => this.cantPartidos = data)
-    }
+    this.userService.currentUserFireStore().pipe(
+      tap(data => {
+        this.currentUser = data.data()
+        sessionStorage.setItem('user', JSON.stringify(data.data()))
+        this.currentStats = { ...this.currentUser.userStats }, this.updateStats = { ...this.currentUser.userStats };
+      }),
+      switchMap(data => this.afs.collection<Partido>('partidos').get()),
+      map(data => {
+        const equipos = this.currentUser.equipo;
+        let partidos: Partido[] = [];
+        data.docs.forEach(e => {
+          for (let equipo of equipos) {
+            e.data().categoria.includes(equipo) ? partidos.push(e.data()) : '';
+          }
+        })
+        return partidos.length
+      }),
+    ).subscribe(data => this.cantPartidos = data)
+
   }
 
   async createPopover(evento, campo) {
@@ -107,10 +109,10 @@ export class MiPerfilPage implements OnInit {
   }
 
   updateStatsFirebase() {
-    this.afs.doc(`users/${this.user.uid}`).update({ userStats: this.updateStats }).then(data => {
+    this.afs.doc(`users/${this.currentUser.uid}`).update({ userStats: this.updateStats }).then(data => {
       sessionStorage.removeItem('user')
-      this.afs.collection('users').doc<Jugador>(this.user.uid).get().subscribe(data => {
-        this.user = data.data()
+      this.afs.collection('users').doc<Jugador>(this.currentUser.uid).get().subscribe(data => {
+        this.currentUser = data.data()
         sessionStorage.setItem('user', JSON.stringify(data.data()))
         this.currentStats = { ...data.data().userStats }
         this.updateStats = { ...data.data().userStats }

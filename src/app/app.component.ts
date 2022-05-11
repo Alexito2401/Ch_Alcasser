@@ -53,7 +53,7 @@ export class AppComponent {
   });
 
   async logout() {
-    await this.afsAuth.signOut()
+    await this.afsAuth.signOut().then(() => sessionStorage.clear())
   }
 
   socialMedia(type) {

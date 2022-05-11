@@ -6,7 +6,7 @@ import * as firebase from 'firebase/compat/app';
 import { finalize } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import imageCompression from 'browser-image-compression';
-import { Jugador } from 'src/app/interfaces/usuario';
+import { Jugador, Posicion } from 'src/app/interfaces/usuario';
 import { NavigationEnd, Router } from '@angular/router';
 import { values } from 'lodash';
 
@@ -21,6 +21,7 @@ export class UserService {
   private previousUrl: string;
   private currentUrl: string;
   private currentUser: firebase.default.User = null;
+  public currentPosicion = new BehaviorSubject('');
   public currentImg: BehaviorSubject<string> = new BehaviorSubject('../../assets/img/default-profile.png');
 
   constructor(private afAuth: AngularFireAuth,
@@ -33,6 +34,9 @@ export class UserService {
       if (event instanceof NavigationEnd) {
         this.previousUrl = this.currentUrl;
         this.currentUrl = event.url;
+        if (this.previousUrl == '/') {
+          this.previousUrl = event.url
+        }
       };
     });
 
@@ -45,6 +49,10 @@ export class UserService {
 
   setImage(url: string) {
     this.currentImg.next(url);
+  }
+
+  setPosicion(posicion: Posicion) {
+    this.currentPosicion.next(posicion);
   }
 
   setUser(user: firebase.default.User) {
@@ -65,6 +73,13 @@ export class UserService {
 
   public referenciaCloudStorage(nombreArchivo: string) {
     return this.storage.ref(`profiles/${nombreArchivo}`);
+  }
+
+  public cambiarPosicionJugador(posicion: Posicion) {
+    if (posicion) {
+      this.setPosicion(posicion)
+      return this.afs.collection('users').doc(this.currentUser.uid).update({ posicion: posicion.toString() })
+    }
   }
 
   async onFileSelect(event: Event, uid: string) {
