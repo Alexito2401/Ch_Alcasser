@@ -27,7 +27,7 @@ const routes: Routes = [
   {
     path: 'modificar',
     loadChildren: () => import('./pages/Login/modificar-perfil/modificar-perfil.module').then(m => m.ModificarPerfilPageModule)
-    , ...canActivate(redirectLoggedInToPartidos)
+    , ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'partidos',

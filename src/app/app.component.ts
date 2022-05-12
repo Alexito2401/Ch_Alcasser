@@ -10,6 +10,8 @@ import { AppAvailability } from '@ionic-native/app-availability/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PartidosService } from './services/partidos.service';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -27,8 +29,9 @@ export class AppComponent {
     private inAppBrowser: InAppBrowser,
     private appAvailability: AppAvailability,
     private router: Router,
-    private partidoService: PartidosService) {
-
+    private partidoService: PartidosService,
+    private screenOrientation: ScreenOrientation) {
+    screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT)
   }
 
   email: string = "";
