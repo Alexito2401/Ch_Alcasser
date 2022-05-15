@@ -22,6 +22,12 @@ export class PatrocinadoresPage implements OnInit {
 
   patrocinadoresList: Patrocinador[] = [
     {
+      nombre: 'Argo Fotografia',
+      foto: 'https://i0.wp.com/chalcasser.es/wp-content/uploads/2021/12/argofotografia.jpg?w=300',
+      linkTo: 'argofotografia',
+      descripcion: "ARGOFOTOGRAFIA és una xicoteta empresa encarregada de gestionar les xarxes socials del Club Handbol Alcàsser. Són especialistes en fotografia esportiva, però també tenen l’equip necessari per a realitzar vídeos, o dissenyar contingut gràfic per a webs o xarxes socials."
+    },
+    {
       nombre: 'Turdiesel',
       foto: 'https://i0.wp.com/chalcasser.es/wp-content/uploads/2015/10/TURDIESEL.gif',
       descripcion: 'Turdiesel es va establir com a taller especialitzat en reparació de Sistemes d’Injecció Dièsel i Turbos, amb un equip professional de més de vint anys d’experiència, ràpidament s’incorpora a la xarxa Bosch Car Service, sent un important referent , en la Comunitat Valenciana'
@@ -51,12 +57,6 @@ export class PatrocinadoresPage implements OnInit {
       nombre: 'San Ramón Senior',
       foto: 'https://i0.wp.com/chalcasser.es/wp-content/uploads/2021/12/8e7dd051-6be3-4e6e-aa9c-4cfc746298d0-1.jpg?w=1600',
       descripcion: 'Sant Ramon Senior S.L., a Picassent, la teva millor opció quan es tracta de RESIDÈNCIES PER A PERSONES MAJORS. La nostra manera d’aconseguir l’excel·lència és dedicant als nostres usuaris tota la nostra experiència en el sector. La claredat, el tracte personal i el compromís són essencials en la nostra manera de conducta. Estem preparats per a ser el teu servei de RESIDÈNCIES PER A PERSONES MAJORS a Picassent.'
-    },
-    {
-      nombre: 'Argo Fotografia',
-      foto: 'https://i0.wp.com/chalcasser.es/wp-content/uploads/2021/12/argofotografia.jpg?w=300',
-      linkTo: 'argofotografia',
-      descripcion: "ARGOFOTOGRAFIA és una xicoteta empresa encarregada de gestionar les xarxes socials del Club Handbol Alcàsser. Són especialistes en fotografia esportiva, però també tenen l’equip necessari per a realitzar vídeos, o dissenyar contingut gràfic per a webs o xarxes socials."
     },
   ]
   constructor(private platform: Platform, private inAppBrowser: InAppBrowser, private appAvailability: AppAvailability) {

@@ -105,15 +105,17 @@ export class AppComponent {
       this.openInApp('https://www.facebook.com/' + name);
       return;
     }
+
     this.appAvailability.check(app)
-      .then(res => {
-        const fbUrl = 'fb://facewebmodal/f?href=' + url;
-        this.openInApp(fbUrl);
-      }
-      ).catch(() => {
-        this.openInApp('https://www.facebook.com/' + name);
-      });
+      .then(
+        (yes: boolean) => {
+          const fbUrl = 'fb://facewebmodal/f?href=' + url;
+          this.openInApp(fbUrl)
+        },
+        (no: boolean) => this.openInApp('https://www.facebook.com/' + name)
+      );
   }
+
   openInApp(url) {
     this.inAppBrowser.create(url, '_system')
   }
@@ -128,13 +130,12 @@ export class AppComponent {
       this.openInApp('https://www.instagram.com/' + name);
       return;
     }
+
     this.appAvailability.check(app)
-      .then((res) => {
-        this.openInApp('instagram://user?username=' + name);
-      }
-      ).catch(err => {
-        this.openInApp('https://www.instagram.com/' + name);
-      });
+      .then(
+        (yes: boolean) => this.openInApp('instagram://user?username=' + name),
+        (no: boolean) => this.openInApp('https://www.instagram.com/' + name)
+      );
   }
 
   openTwitter(name) {
@@ -147,14 +148,15 @@ export class AppComponent {
       this.openInApp('https://twitter.com/' + name);
       return;
     }
+
     this.appAvailability.check(app)
-      .then((res) => {
-        const data = 'twitter://user?screen_name=' + name;
-        this.openInApp(data);
-      }
-      ).catch(err => {
-        this.openInApp('https://twitter.com/' + name);
-      });
+      .then(
+        (yes: boolean) => {
+          const data = 'twitter://user?screen_name=' + name;
+          this.openInApp(data);
+        },
+        (no: boolean) => this.openInApp('https://twitter.com/' + name)
+      );
   }
 
   openYoutube() {
@@ -167,13 +169,14 @@ export class AppComponent {
       this.openInApp('https://youtube.com/channel/UClTjVYGaC-9itiSxivCxhlQ');
       return;
     }
+
     this.appAvailability.check(app)
-      .then((res) => {
-        const data = 'twitter://user?screen_name=' + name;
-        this.openInApp(data);
-      }
-      ).catch(err => {
-        this.openInApp('https://youtube.com/channel/UClTjVYGaC-9itiSxivCxhlQ');
-      });
+      .then(
+        (yes: boolean) => {
+          const data = 'youtube://channel?id=UClTjVYGaC-9itiSxivCxhlQ';
+          this.openInApp(data);
+        },
+        (no: boolean) => this.openInApp('https://youtube.com/channel/UClTjVYGaC-9itiSxivCxhlQ')
+      );
   }
 }

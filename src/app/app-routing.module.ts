@@ -15,11 +15,6 @@ const routes: Routes = [
     , ...canActivate(redirectLoggedInToPartidos)
   },
   {
-    path: 'registrarse',
-    loadChildren: () => import('./pages/Login/registrarse/registrarse.module').then(m => m.RegistrarsePageModule)
-    , ...canActivate(redirectLoggedInToPartidos)
-  },
-  {
     path: 'verificar',
     loadChildren: () => import('./pages/Login/verificar-email/verificar-email.module').then(m => m.VerificarEmailPageModule)
     , ...canActivate(redirectLoggedInToPartidos)
