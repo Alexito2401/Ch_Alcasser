@@ -78,7 +78,7 @@ export class PartidosPage implements OnInit {
         }
 
 
-        if (sessionStorage.getItem('partidos') && JSON.parse(sessionStorage.getItem('partidos')) != []) {
+        if (sessionStorage.getItem('partidos')) {
           this.partidos = JSON.parse(sessionStorage.getItem('partidos'));
           if (!this.currentUser) {
             this.partidosFilter = of([...this.partidos])
@@ -112,6 +112,10 @@ export class PartidosPage implements OnInit {
           })
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    sessionStorage.setItem('partidos', JSON.stringify(this.partidos))
   }
 
   search(query) {

@@ -1,12 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import * as firebase from 'firebase/compat/app';
-import { filter } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../services/user.service';
 import { ValidatorsService } from '../../../services/validators.service';
-import { Posicion } from '../../../interfaces/usuario';
+import { Categoria, Posicion } from '../../../interfaces/usuario';
 
 @Component({
   selector: 'app-modificar-perfil',
@@ -18,7 +16,7 @@ export class ModificarPerfilPage implements OnInit {
   @ViewChild('fileDialog') FileSelectInputDialog: ElementRef
   imageURL;
   uploadForm: FormGroup;
-  categorias = environment.categorias;
+  categorias = Categoria;
   event: Event;
   posiciones: typeof Posicion = Posicion;
   goTo: string;
@@ -50,7 +48,7 @@ export class ModificarPerfilPage implements OnInit {
         avatar: [null],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-        posicion: [null]
+        posicion: [null, Validators.required]
       }, {
         validators: [this.vs.camposIguales('password', 'confirmPassword')]
       })

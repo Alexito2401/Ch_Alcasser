@@ -13,16 +13,6 @@ export const environment = {
     appId: "1:505461217103:web:2b8bfe0a552899b650573a",
     measurementId: "G-K6EEWCK7RV",
   },
-
-  categorias: [
-    "Benjamin",
-    "Alevin",
-    "Infantil Fememní",
-    "Infantil masculí",
-    "Cadet Masculí",
-    "Juvenil",
-    "Senior B",
-    "Senior A"]
 };
 
 /*
